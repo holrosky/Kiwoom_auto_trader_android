@@ -14,10 +14,12 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline3"
+                android:id="@+id/guidelineTop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -25,250 +27,265 @@
 
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline6"
+                android:id="@+id/guidelineBottom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="0.98" />
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline2"
+                android:id="@+id/guidelineLeft"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.02" />
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline5"
+                android:id="@+id/guidelineRight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.98" />
 
             <TextView
-                android:id="@+id/textView13"
+                android:id="@+id/tvMsgServer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="메세지 서버:"
-                app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toTopOf="@+id/guideline3" />
+                app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+                app:layout_constraintTop_toTopOf="@+id/guidelineTop" />
 
             <TextView
-                android:id="@+id/textView14"
+                android:id="@+id/tvMsgServerStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="연결됨"
-                app:layout_constraintStart_toEndOf="@+id/textView13"
-                app:layout_constraintTop_toTopOf="@+id/guideline3" />
+                app:layout_constraintStart_toEndOf="@+id/tvMsgServer"
+                app:layout_constraintTop_toTopOf="@+id/guidelineTop" />
 
             <TextView
-                android:id="@+id/textView18"
+                android:id="@+id/tvAutoTrader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="자동매매 프로그램:"
-                app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/textView13" />
+                app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+                app:layout_constraintTop_toBottomOf="@+id/tvMsgServer" />
 
             <TextView
-                android:id="@+id/textView19"
+                android:id="@+id/tvAutoTraderStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="연결됨"
-                app:layout_constraintStart_toEndOf="@+id/textView18"
-                app:layout_constraintTop_toBottomOf="@+id/textView14" />
+                app:layout_constraintStart_toEndOf="@+id/tvAutoTrader"
+                app:layout_constraintTop_toBottomOf="@+id/tvMsgServerStatus" />
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/btnTradeServer"
                 android:layout_width="77dp"
                 android:layout_height="48dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
                 android:text="모의서버"
                 android:textSize="10sp"
-                app:layout_constraintEnd_toStartOf="@+id/guideline5"
-                app:layout_constraintTop_toTopOf="@+id/guideline3" />
+                app:layout_constraintEnd_toStartOf="@+id/btnAccChange"
+                app:layout_constraintTop_toTopOf="@+id/guidelineTop" />
+
+            <Button
+                android:id="@+id/btnAccChange"
+                android:layout_width="77dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="8dp"
+                android:text="계정"
+                android:textSize="10sp"
+                app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
+                app:layout_constraintTop_toTopOf="@+id/guidelineTop" />
 
             <LinearLayout
-                android:id="@+id/linearLayout1"
+                android:id="@+id/lineSecond"
                 android:layout_width="0dp"
                 android:layout_height="46dp"
                 android:layout_marginTop="16dp"
                 android:background="@android:color/darker_gray"
                 android:orientation="horizontal"
-                app:layout_constraintEnd_toStartOf="@+id/guideline5"
-                app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/textView25">
+                app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
+                app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+                app:layout_constraintTop_toBottomOf="@+id/etTradeProfit">
 
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textView20"
+                android:id="@+id/tvProfit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="손익 조회"
-                app:layout_constraintEnd_toStartOf="@+id/guideline5"
-                app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
+                app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+                app:layout_constraintTop_toBottomOf="@+id/lineFirst" />
 
             <TextView
-                android:id="@+id/textView21"
+                android:id="@+id/tvDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:text="날짜 :"
-                app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/textView20" />
+                app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+                app:layout_constraintTop_toBottomOf="@+id/tvProfit" />
 
             <TextView
-                android:id="@+id/textView22"
+                android:id="@+id/tvDateInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
                 android:text="2022-04-21"
-                app:layout_constraintStart_toEndOf="@+id/textView21"
-                app:layout_constraintTop_toBottomOf="@+id/textView20" />
+                app:layout_constraintStart_toEndOf="@+id/tvDate"
+                app:layout_constraintTop_toBottomOf="@+id/tvProfit" />
 
             <Button
-                android:id="@+id/button5"
+                android:id="@+id/btnSelectDate"
                 android:layout_width="77dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="날짜선택"
                 android:textSize="10sp"
-                app:layout_constraintStart_toEndOf="@+id/textView22"
-                app:layout_constraintTop_toBottomOf="@+id/textView20" />
+                app:layout_constraintStart_toEndOf="@+id/tvDateInput"
+                app:layout_constraintTop_toBottomOf="@+id/tvProfit" />
 
             <TextView
-                android:id="@+id/textView23"
+                android:id="@+id/tvAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="36dp"
                 android:text="계좌선택 :"
-                app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/textView21" />
+                app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+                app:layout_constraintTop_toBottomOf="@+id/tvDate" />
 
             <Spinner
-                android:id="@+id/spinner2"
+                android:id="@+id/spnAccount"
                 android:layout_width="148dp"
                 android:layout_height="22dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="14dp"
-                app:layout_constraintStart_toEndOf="@+id/textView23"
-                app:layout_constraintTop_toBottomOf="@+id/button5" />
+                app:layout_constraintStart_toEndOf="@+id/tvAccount"
+                app:layout_constraintTop_toBottomOf="@+id/btnSelectDate" />
 
             <Button
-                android:id="@+id/button6"
+                android:id="@+id/btnGetProfit"
                 android:layout_width="77dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="8dp"
                 android:text="조회"
                 android:textSize="10sp"
-                app:layout_constraintStart_toEndOf="@+id/spinner2"
-                app:layout_constraintTop_toBottomOf="@+id/button5" />
+                app:layout_constraintStart_toEndOf="@+id/spnAccount"
+                app:layout_constraintTop_toBottomOf="@+id/btnSelectDate" />
 
             <TextView
-                android:id="@+id/textView24"
+                android:id="@+id/tvTradeProfit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:text="청산손익:"
-                app:layout_constraintEnd_toStartOf="@+id/textView25"
+                app:layout_constraintEnd_toStartOf="@+id/etTradeProfit"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView23" />
+                app:layout_constraintTop_toBottomOf="@+id/tvAccount" />
 
             <EditText
-                android:id="@+id/textView25"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/etTradeProfit"
+                android:layout_width="57dp"
+                android:layout_height="33dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
                 android:background="@drawable/edittext_rounded_corner_rectangle"
+                android:enabled="false"
                 android:padding="5dp"
-                android:text="1500"
-                app:layout_constraintEnd_toStartOf="@+id/textView26"
+                android:textColor="@drawable/edit_text_select_color"
+                app:layout_constraintEnd_toStartOf="@+id/tvFee"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textView24"
-                app:layout_constraintTop_toBottomOf="@+id/textView23" />
+                app:layout_constraintStart_toEndOf="@+id/tvTradeProfit"
+                app:layout_constraintTop_toBottomOf="@+id/tvAccount" />
 
             <TextView
-                android:id="@+id/textView26"
+                android:id="@+id/tvFee"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
                 android:text="수수료:"
-                app:layout_constraintEnd_toStartOf="@+id/textView27"
+                app:layout_constraintEnd_toStartOf="@+id/etFee"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textView25"
-                app:layout_constraintTop_toBottomOf="@+id/textView23" />
+                app:layout_constraintStart_toEndOf="@+id/etTradeProfit"
+                app:layout_constraintTop_toBottomOf="@+id/tvAccount" />
 
             <EditText
-                android:id="@+id/textView27"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/etFee"
+                android:layout_width="57dp"
+                android:layout_height="33dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
                 android:background="@drawable/edittext_rounded_corner_rectangle"
                 android:padding="5dp"
-                android:text="1500"
-                app:layout_constraintEnd_toStartOf="@+id/textView28"
+                android:enabled="false"
+                android:textColor="@drawable/edit_text_select_color"
+                app:layout_constraintEnd_toStartOf="@+id/tvTotalProfit"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textView26"
-                app:layout_constraintTop_toBottomOf="@+id/textView23" />
+                app:layout_constraintStart_toEndOf="@+id/tvFee"
+                app:layout_constraintTop_toBottomOf="@+id/tvAccount" />
 
             <TextView
-                android:id="@+id/textView28"
+                android:id="@+id/tvTotalProfit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
                 android:text="순손익:"
-                app:layout_constraintEnd_toStartOf="@+id/textView29"
+                app:layout_constraintEnd_toStartOf="@+id/etTotalProfit"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textView27"
-                app:layout_constraintTop_toBottomOf="@+id/textView23" />
+                app:layout_constraintStart_toEndOf="@+id/etFee"
+                app:layout_constraintTop_toBottomOf="@+id/tvAccount" />
 
             <EditText
-                android:id="@+id/textView29"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/etTotalProfit"
+                android:layout_width="57dp"
+                android:layout_height="33dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
                 android:background="@drawable/edittext_rounded_corner_rectangle"
                 android:padding="5dp"
-                android:text="1500"
+                android:enabled="false"
+                android:textColor="@drawable/edit_text_select_color"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/guideline5"
+                app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textView28"
-                app:layout_constraintTop_toBottomOf="@+id/textView23" />
+                app:layout_constraintStart_toEndOf="@+id/tvTotalProfit"
+                app:layout_constraintTop_toBottomOf="@+id/tvAccount" />
 
             <LinearLayout
-                android:id="@+id/linearLayout"
+                android:id="@+id/lineFirst"
                 android:layout_width="0dp"
                 android:layout_height="46dp"
                 android:layout_marginTop="16dp"
                 android:background="@android:color/darker_gray"
                 android:orientation="horizontal"
-                app:layout_constraintEnd_toStartOf="@+id/guideline5"
-                app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/textView19"></LinearLayout>
+                app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
+                app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+                app:layout_constraintTop_toBottomOf="@+id/tvAutoTraderStatus"></LinearLayout>
 
             <TextView
-                android:id="@+id/textView31"
+                android:id="@+id/tvStrategy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="전략"
-                app:layout_constraintEnd_toStartOf="@+id/guideline5"
-                app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout1" />
+                app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
+                app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+                app:layout_constraintTop_toBottomOf="@+id/lineSecond" />
 
             <TextView
                 android:id="@+id/textView32"
@@ -276,7 +293,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:text="TextView"
-                app:layout_constraintTop_toBottomOf="@+id/textView31"
+                app:layout_constraintTop_toBottomOf="@+id/tvStrategy"
                 tools:layout_editor_absoluteX="165dp" />
 
             <TextView
