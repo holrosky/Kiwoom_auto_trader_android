@@ -99,7 +99,7 @@
                 android:layout_height="48dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
-                android:text="계정"
+                android:text="계정변경"
                 android:textSize="10sp"
                 app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
                 app:layout_constraintTop_toTopOf="@+id/guidelineTop" />
@@ -107,7 +107,7 @@
             <LinearLayout
                 android:id="@+id/lineSecond"
                 android:layout_width="0dp"
-                android:layout_height="46dp"
+                android:layout_height="1dp"
                 android:layout_marginTop="16dp"
                 android:background="@android:color/darker_gray"
                 android:orientation="horizontal"
@@ -269,7 +269,7 @@
             <LinearLayout
                 android:id="@+id/lineFirst"
                 android:layout_width="0dp"
-                android:layout_height="46dp"
+                android:layout_height="1dp"
                 android:layout_marginTop="16dp"
                 android:background="@android:color/darker_gray"
                 android:orientation="horizontal"
