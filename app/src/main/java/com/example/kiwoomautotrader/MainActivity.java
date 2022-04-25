@@ -1,5 +1,7 @@
 package com.example.kiwoomautotrader;
 
+import static com.amazonaws.mobile.auth.core.internal.util.ThreadUtils.runOnUiThread;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -8,12 +10,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -30,8 +37,13 @@ import com.amazonaws.services.iot.model.CreateKeysAndCertificateRequest;
 import com.amazonaws.services.iot.model.CreateKeysAndCertificateResult;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.security.KeyStore;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.UUID;
 
@@ -55,7 +67,21 @@ public class MainActivity extends AppCompatActivity {
     private static EditText etTotalProfit;
 
     private static TextView tvStrategy;
+    private static Button btnAddStrategy;
+    private static ListView list;
 
+    private ArrayList<String> strategyList;
+    private CustomAdapter adapter;
+
+    private static int offCount;
+    private final Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            tvAutoTraderStatus.setText("연결 끊김");
+            setUIForStop();
+        }
+    };
+
+    private static boolean isUIDisabled;
     private AWSMQTT AWSMQTTClient;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -65,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         sharedPreferences = getApplicationContext().getSharedPreferences("sharedPreferences", 0);
         editor = sharedPreferences.edit();
@@ -92,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
         etTotalProfit = (EditText) findViewById(R.id.etTotalProfit);
 
         tvStrategy = (TextView) findViewById(R.id.tvStrategy);
+        btnAddStrategy = (Button) findViewById(R.id.btnAddStrategy);
+        list = (ListView) findViewById(R.id.list);
 
         if (sharedPreferences.getString("trade_server", "test").equals("test")) {
             serverType = "모의서버";
@@ -101,6 +131,31 @@ public class MainActivity extends AppCompatActivity {
             serverType = "실전서버";
             btnTradeServer.setText("모의서버");
         }
+        ArrayList<String> strategyList = new ArrayList<String>();
+        for(int i=0;i<10;i++) {
+            strategyList.add("Test" + i);
+        }
+
+        adapter = new CustomAdapter(MainActivity.this,R.layout.row_item, strategyList);
+        list.setAdapter(adapter);
+
+
+//        strategyList = new ArrayList<String>();
+//
+//        adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, strategyList);
+//
+//        // Here, you set the data in your ListView
+//        list.setAdapter(adapter);
+
+        btnAddStrategy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // this line adds the data of your EditText and puts in your array
+                adapter.add("hello world");
+                // next thing you have to do is check if your adapter has changed
+            }
+        });
+
 
         btnTradeServer.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -186,18 +241,64 @@ public class MainActivity extends AppCompatActivity {
 
         tvMsgServerStatus.setText("연결 끊김");
         tvAutoTraderStatus.setText("연결 끊김");
+        setUIForStop();
 
         try {
+
             AWSMQTTClient.disconnect();
             AWSMQTTClient.connect();
+            autoTraderConnectionCheck();
         } catch (Exception e) {
             Log.e("AWSMQTTClient reconnect error", e.toString());
         }
     }
 
+    private void autoTraderConnectionCheck() {
+        offCount = 0;
+
+        new Thread() {
+            public void run() {
+                while (true) {
+                    if (offCount >= 5) {
+                        //tvAutoTraderStatus.setText("연결 끊김");
+                        handler.sendMessage(handler.obtainMessage());
+                    }
+                    offCount++;
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.start();
+    }
+    private static void setUIForRunning() {
+        isUIDisabled = false;
+        btnSelectDate.setEnabled(true);
+        spnAccount.setEnabled(true);
+        btnGetProfit.setEnabled(true);
+    }
+
+    private void setUIForStop() {
+        isUIDisabled = true;
+        btnSelectDate.setEnabled(false);
+        spnAccount.setEnabled(false);
+        btnGetProfit.setEnabled(false);
+    }
 
     public static void setMqttServerStatus(String status)
     {
         tvMsgServerStatus.setText(status);
+    }
+    public static void resetTraderStatusCount()
+    {
+        offCount = 0;
+        tvAutoTraderStatus.setText("연결됨");
+
+        if (isUIDisabled)
+        {
+            setUIForRunning();
+        }
     }
 }

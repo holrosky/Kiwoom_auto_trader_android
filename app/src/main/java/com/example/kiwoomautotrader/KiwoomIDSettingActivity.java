@@ -55,7 +55,7 @@ public class KiwoomIDSettingActivity extends AppCompatActivity {
 
                    else
                    {
-                       editor.putString("kiwoom_id", kiwoomID);
+                       editor.putString("kiwoom_id", kiwoomID.replaceAll(" ", ""));
                        editor.putString("trade_server", "test");
                        editor.commit();
 

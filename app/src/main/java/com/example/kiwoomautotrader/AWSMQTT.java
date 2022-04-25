@@ -3,6 +3,7 @@ package com.example.kiwoomautotrader;
 import static com.amazonaws.mobile.auth.core.internal.util.ThreadUtils.runOnUiThread;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
@@ -49,9 +50,13 @@ public class AWSMQTT {
 
     CognitoCachingCredentialsProvider credentialsProvider;
 
+    private SharedPreferences sharedPreferences;
+
     public AWSMQTT(Context context)
     {
         clientId = UUID.randomUUID().toString();
+
+        sharedPreferences = context.getSharedPreferences("sharedPreferences", 0);
 
         // Initialize the AWS Cognito credentials provider
         credentialsProvider = new CognitoCachingCredentialsProvider(
@@ -170,7 +175,7 @@ public class AWSMQTT {
                                     MainActivity.setMqttServerStatus("연결중");
                                 } else if (status == AWSIotMqttClientStatusCallback.AWSIotMqttClientStatus.Connected) {
                                     MainActivity.setMqttServerStatus("연결됨");
-                                    subscribe("kiwoom");
+                                    subscribe("python/" + sharedPreferences.getString("kiwoom_id", "") + "/" + sharedPreferences.getString("trade_server", ""));
                                 } else if (status == AWSIotMqttClientStatusCallback.AWSIotMqttClientStatus.Reconnecting) {
                                     MainActivity.setMqttServerStatus("다시 연결중");
                                     if (throwable != null) {
@@ -203,20 +208,25 @@ public class AWSMQTT {
 
     public void publish(String msg, String topic)
     {
+        topic = "android/" + sharedPreferences.getString("kiwoom_id", "") + "/" + sharedPreferences.getString("trade_server", "") + "/" + topic;
         mqttManager.publishString(msg, topic, AWSIotMqttQos.QOS0);
     }
 
     public void subscribe(String topic) {
         try {
-            mqttManager.subscribeToTopic(topic, AWSIotMqttQos.QOS0, new AWSIotMqttNewMessageCallback() {
+            mqttManager.subscribeToTopic(topic + "/#", AWSIotMqttQos.QOS0, new AWSIotMqttNewMessageCallback() {
                 public void onMessageArrived(String topic, final byte[] data) {
                     runOnUiThread(new Runnable() {
                         public void run() {
                             try {
+                                if (topic.contains("running_state"))
+                                {
+                                    Log.d(LOG_TAG, "It's topic is for run");
+                                }
+                                MainActivity.resetTraderStatusCount();
                                 String message = new String(data, "UTF-8");
                                 JSONObject jsonObject = new JSONObject(message);
                                 Log.d(LOG_TAG, "Message received: " + jsonObject.toString());
-                                MainActivity.setMqttServerStatus(jsonObject.toString());
 
                             } catch (UnsupportedEncodingException | JSONException e2) {
                                 Log.e(LOG_TAG, "Message encoding error.", e2);
