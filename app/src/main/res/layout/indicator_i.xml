@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:multi_line_radio_group="http://schemas.android.com/tools"
+    android:gravity="center"
+    app:cardCornerRadius="20dp"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:id="@+id/root"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvStrategyName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/btnDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:layout_margin="10dp"
+                android:layout_marginRight="15dp"
+                android:text="삭제" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="가격지표 1"
+            android:textSize="20sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+           <com.example.kiwoomautotrader.MultiRowsRadioGroup
+               android:id="@+id/rgType"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:checkedButton="@id/r1">
+               <TableRow>
+                   <RadioButton
+                       android:id="@+id/r1"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="전일시가"/>
+                   <RadioButton
+                       android:id="@+id/r2"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="전일고가"/>
+                   <RadioButton
+                       android:id="@+id/r3"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="전일저가"/>
+               </TableRow>
+               <TableRow>
+                   <RadioButton
+                       android:id="@+id/r4"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="전일종가" />
+
+                   <RadioButton
+                       android:id="@+id/r5"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="전일중심가" />
+
+                   <RadioButton
+                       android:id="@+id/r6"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="당일시가" />
+
+
+               </TableRow>
+               <TableRow>
+                   <RadioButton
+                       android:id="@+id/r7"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="당일고가" />
+
+                   <RadioButton
+                       android:id="@+id/r8"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="당일저가" />
+
+                   <RadioButton
+                       android:id="@+id/r9"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="당일중심가" />
+               </TableRow>
+               <TableRow>
+                   <RadioButton
+                       android:id="@+id/r10"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:text="수동입력 : " />
+
+                   <EditText
+                       android:id="@+id/etManualPrice"
+                       android:layout_width="60dp"
+                       android:layout_height="30dp"
+                       android:layout_marginLeft="5dp"
+                       android:background="@drawable/edittext_rounded_corner_rectangle"
+                       android:gravity="center"
+                       android:inputType="number|numberDecimal"
+                       android:textSize="20sp" />
+               </TableRow>
+           </com.example.kiwoomautotrader.MultiRowsRadioGroup>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="!!수동입력이 아니라면 위에 아무 숫자나 넣어주세요!!"
+                android:textSize="13sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="틱 차이 : "
+                    android:textSize="20sp" />
+
+
+                <EditText
+                    android:id="@+id/etTickDiffFrom"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/edittext_rounded_corner_rectangle"
+                    android:gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:inputType="number"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="~"
+                    android:textSize="20sp" />
+
+
+                <EditText
+                    android:id="@+id/etTickDiffTo"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/edittext_rounded_corner_rectangle"
+                    android:gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:inputType="number"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_margin="10dp"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:orientation="horizontal"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="가격지표 2"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="당일 중심가 - "
+                    android:textSize="20sp" />
+
+                <RadioGroup
+                    android:id="@+id/rgSecondType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkedButton="@id/default2"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/default2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="당일저가" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="당일고가" />
+                </RadioGroup>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/etSecondNumerator"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/edittext_rounded_corner_rectangle"
+                    android:gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:inputType="number"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" / 10 "
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="!!위 빈칸에 큰 수 (ex. 100)를 넣으면 절대 만족하지 않습니다!!"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_margin="10dp"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:orientation="horizontal"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="가격지표 3"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="당일 중심가 - "
+                    android:textSize="20sp" />
+
+                <RadioGroup
+                    android:id="@+id/rgThirdType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkedButton="@id/default5"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/default5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="전일저가" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="전일고가" />
+                </RadioGroup>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/etThirdNumerator"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/edittext_rounded_corner_rectangle"
+                    android:gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:inputType="number"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" / 10 "
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="!!위 빈칸에 큰 수 (ex. 100)를 넣으면 절대 만족하지 않습니다!!"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

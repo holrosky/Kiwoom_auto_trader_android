@@ -39,7 +39,7 @@
                 app:layout_constraintGuide_percent="0.98" />
 
             <TextView
-                android:id="@+id/tvMsgServer"
+                android:id="@+id/tvStrategyName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="메세지 서버:"
@@ -47,11 +47,11 @@
                 app:layout_constraintTop_toTopOf="@+id/guidelineTop" />
 
             <TextView
-                android:id="@+id/tvMsgServerStatus"
+                android:id="@+id/etStrategyName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                app:layout_constraintStart_toEndOf="@+id/tvMsgServer"
+                app:layout_constraintStart_toEndOf="@+id/tvStrategyName"
                 app:layout_constraintTop_toTopOf="@+id/guidelineTop" />
 
             <TextView
@@ -61,7 +61,7 @@
                 android:layout_marginTop="8dp"
                 android:text="자동매매 프로그램:"
                 app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
-                app:layout_constraintTop_toBottomOf="@+id/tvMsgServer" />
+                app:layout_constraintTop_toBottomOf="@+id/tvStrategyName" />
 
             <TextView
                 android:id="@+id/tvAutoTraderStatus"
@@ -70,7 +70,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toEndOf="@+id/tvAutoTrader"
-                app:layout_constraintTop_toBottomOf="@+id/tvMsgServerStatus" />
+                app:layout_constraintTop_toBottomOf="@+id/etStrategyName" />
 
             <Button
                 android:id="@+id/btnTradeServer"
@@ -132,6 +132,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
+                android:textSize="15sp"
                 android:text="2022-04-21"
                 app:layout_constraintStart_toEndOf="@+id/tvDate"
                 app:layout_constraintTop_toBottomOf="@+id/tvProfit" />
@@ -151,15 +152,15 @@
                 android:id="@+id/tvAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
+                android:layout_marginTop="28dp"
                 android:text="계좌선택 :"
                 app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
                 app:layout_constraintTop_toBottomOf="@+id/tvDate" />
 
             <Spinner
                 android:id="@+id/spnAccount"
-                android:layout_width="148dp"
-                android:layout_height="22dp"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="14dp"
                 app:layout_constraintStart_toEndOf="@+id/tvAccount"
@@ -189,7 +190,7 @@
             <EditText
                 android:id="@+id/etTradeProfit"
                 android:layout_width="57dp"
-                android:layout_height="33dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
                 android:background="@drawable/edittext_rounded_corner_rectangle"
@@ -216,7 +217,7 @@
             <EditText
                 android:id="@+id/etFee"
                 android:layout_width="57dp"
-                android:layout_height="33dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
                 android:background="@drawable/edittext_rounded_corner_rectangle"
@@ -243,7 +244,7 @@
             <EditText
                 android:id="@+id/etTotalProfit"
                 android:layout_width="57dp"
-                android:layout_height="33dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
                 android:background="@drawable/edittext_rounded_corner_rectangle"
@@ -272,28 +273,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="전략"
+                android:text="전략 리스트"
                 app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
                 app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
                 app:layout_constraintTop_toBottomOf="@+id/lineSecond" />
 
             <Button
                 android:id="@+id/btnAddStrategy"
-                android:layout_width="77dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:text="전략추가"
-                android:textSize="10sp"
+                android:text="추가"
+                android:textSize="15sp"
                 app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
-                app:layout_constraintTop_toBottomOf="@+id/tvStrategy" />
+                app:layout_constraintTop_toBottomOf="@+id/lineSecond" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="10dp">
 
             <ListView
                 android:id="@+id/list"

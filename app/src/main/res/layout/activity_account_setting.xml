@@ -12,29 +12,22 @@
         android:id="@+id/btnAccConfirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:text="확인"
-        app:layout_constraintBottom_toTopOf="@+id/guidelineBottom"
         app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
-        app:layout_constraintStart_toEndOf="@+id/etAccountInput"
-        app:layout_constraintTop_toTopOf="@+id/guidelineTop" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineBottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.52" />
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+        app:layout_constraintTop_toBottomOf="@+id/etAccountInput" />
 
     <TextView
         android:id="@+id/tvAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
         android:text="키움 아이디:"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/guidelineBottom"
-        app:layout_constraintEnd_toStartOf="@+id/etAccountInput"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
         app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
-        app:layout_constraintTop_toTopOf="@+id/guidelineTop" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineTop"
@@ -61,14 +54,14 @@
         android:id="@+id/etAccountInput"
         android:layout_width="185dp"
         android:layout_height="50dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/edittext_rounded_corner_rectangle"
-        android:padding="5dp"
-        android:textSize="20sp"
         android:hint="키움증권 ID 입력"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/guidelineBottom"
-        app:layout_constraintEnd_toStartOf="@+id/btnAccConfirm"
-        app:layout_constraintStart_toEndOf="@+id/tvAccount"
-        app:layout_constraintTop_toTopOf="@+id/guidelineTop" />
+        android:padding="5dp"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+        app:layout_constraintTop_toBottomOf="@+id/tvAccount" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

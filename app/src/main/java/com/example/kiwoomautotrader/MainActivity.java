@@ -1,54 +1,40 @@
 package com.example.kiwoomautotrader;
 
-import static com.amazonaws.mobile.auth.core.internal.util.ThreadUtils.runOnUiThread;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.amazonaws.auth.CognitoCachingCredentialsProvider;
-import com.amazonaws.mobileconnectors.iot.AWSIotKeystoreHelper;
-import com.amazonaws.mobileconnectors.iot.AWSIotMqttLastWillAndTestament;
-import com.amazonaws.mobileconnectors.iot.AWSIotMqttManager;
-import com.amazonaws.mobileconnectors.iot.AWSIotMqttQos;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.iot.AWSIotClient;
-import com.amazonaws.services.iot.model.AttachPrincipalPolicyRequest;
-import com.amazonaws.services.iot.model.CreateKeysAndCertificateRequest;
-import com.amazonaws.services.iot.model.CreateKeysAndCertificateResult;
-import com.google.android.material.snackbar.Snackbar;
-
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.security.KeyStore;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
     static final String LOG_TAG = MainActivity.class.getCanonicalName();
+
+    private static Context mContext;
+
 
     private static final String kiwoomID = "artanis0";
 
@@ -70,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
     private static Button btnAddStrategy;
     private static ListView list;
 
-    private ArrayList<String> strategyList;
-    private CustomAdapter adapter;
+    private static ArrayList<String> strategyNameList;
+    private static MainCustomAdapter adapter;
 
     private static int offCount;
     private final Handler handler = new Handler() {
@@ -86,26 +72,44 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
+    private long backpressedTime = 0;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        mContext = this;
 
         sharedPreferences = getApplicationContext().getSharedPreferences("sharedPreferences", 0);
         editor = sharedPreferences.edit();
 
+        if (sharedPreferences.getString("strategy_json", null) == null)
+        {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("strategy_list", new JSONArray());
+                editor.putString("strategy_json", jsonObject.toString());
+                editor.commit();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+
         if (sharedPreferences.getString("kiwoom_id", null) == null)
         {
+            finish();
             Intent intent = new Intent(getApplicationContext(), KiwoomIDSettingActivity.class);
             startActivity(intent);
         }
 
         String serverType = "";
 
-        tvMsgServerStatus = (TextView) findViewById(R.id.tvMsgServerStatus);
+        tvMsgServerStatus = (TextView) findViewById(R.id.etStrategyName);
         tvAutoTraderStatus = (TextView) findViewById(R.id.tvAutoTraderStatus);
         btnTradeServer = (Button) findViewById(R.id.btnTradeServer);
         btnAccChange = (Button) findViewById(R.id.btnAccChange);
@@ -131,28 +135,45 @@ public class MainActivity extends AppCompatActivity {
             serverType = "실전서버";
             btnTradeServer.setText("모의서버");
         }
-        ArrayList<String> strategyList = new ArrayList<String>();
-        for(int i=0;i<10;i++) {
-            strategyList.add("Test" + i);
-        }
 
-        adapter = new CustomAdapter(MainActivity.this,R.layout.row_item, strategyList);
-        list.setAdapter(adapter);
-
-
-//        strategyList = new ArrayList<String>();
-//
-//        adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, strategyList);
-//
-//        // Here, you set the data in your ListView
-//        list.setAdapter(adapter);
 
         btnAddStrategy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // this line adds the data of your EditText and puts in your array
-                adapter.add("hello world");
-                // next thing you have to do is check if your adapter has changed
+                strategyNameList.add("새로운 전략");
+                try {
+
+                    JSONObject newStrategy = new JSONObject();
+
+                    newStrategy.put("strategy_name", "새로운 전략");
+                    newStrategy.put("runnig_status", "false");
+                    newStrategy.put("sCode", "");
+                    newStrategy.put("is_simulation", "false");
+                    newStrategy.put("trade_account", "");
+                    newStrategy.put("max_loss", "");
+                    newStrategy.put("max_profit", "");
+                    newStrategy.put("start_hour", "");
+                    newStrategy.put("start_min", "");
+                    newStrategy.put("end_hour", "");
+                    newStrategy.put("end_min", "");
+                    newStrategy.put("enter_buy", new JSONArray());
+                    newStrategy.put("enter_sell", new JSONArray());
+                    newStrategy.put("clear_buy", new JSONArray());
+                    newStrategy.put("clear_sell", new JSONArray());
+
+                    JSONObject jsonObject = new JSONObject(sharedPreferences.getString("strategy_json", null));
+
+                    jsonObject.getJSONArray("strategy_list").put(newStrategy);
+
+                    editor.putString("strategy_json", jsonObject.toString());
+                    editor.commit();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -178,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
         btnAccChange.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 try {
-                    finish();
+
                     Intent intent = new Intent(getApplicationContext(), KiwoomIDSettingActivity.class);
                     startActivity(intent);
 
@@ -243,14 +264,35 @@ public class MainActivity extends AppCompatActivity {
         tvAutoTraderStatus.setText("연결 끊김");
         setUIForStop();
 
+        strategyNameList = new ArrayList<String>();
+
+        try {
+            JSONObject jsonObject = new JSONObject(sharedPreferences.getString("strategy_json", null));
+            JSONArray jsonArray = jsonObject.getJSONArray("strategy_list");
+
+            for(int i = 0; i < jsonArray.length(); i++)
+            {
+                strategyNameList.add(jsonArray.getJSONObject(i).getString("strategy_name"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        adapter = new MainCustomAdapter(MainActivity.this,R.layout.activity_main_strategy_row_item, strategyNameList);
+        list.setAdapter(adapter);
+
         try {
 
             AWSMQTTClient.disconnect();
             AWSMQTTClient.connect();
             autoTraderConnectionCheck();
+
+
         } catch (Exception e) {
             Log.e("AWSMQTTClient reconnect error", e.toString());
         }
+
+
     }
 
     private void autoTraderConnectionCheck() {
@@ -301,4 +343,122 @@ public class MainActivity extends AppCompatActivity {
             setUIForRunning();
         }
     }
+
+
+    public static void strategySetting(int position)
+    {
+        Dialog settingDialog = new Dialog(btnAccChange.getContext());
+        settingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        settingDialog.setContentView(R.layout.settting_dialog);
+
+        settingDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        settingDialog.show();
+        settingDialog.findViewById(R.id.llGeneralSetting).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                settingDialog.dismiss();
+                Intent intent = new Intent(mContext, GeneralSettingActivity.class);
+                intent.putExtra("position", position);
+                intent.putExtra("strategy_name", strategyNameList.get(position));
+                mContext.startActivity(intent);
+            }
+        });
+
+        settingDialog.findViewById(R.id.llEnterBuySetting).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                settingDialog.dismiss();
+                Intent intent = new Intent(mContext, IndicatorSettingActivity.class);
+                intent.putExtra("type", "enter_buy");
+                intent.putExtra("position", position);
+                intent.putExtra("strategy_name", strategyNameList.get(position));
+                mContext.startActivity(intent);
+            }
+        });
+
+        settingDialog.findViewById(R.id.llEnterSellSetting).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                settingDialog.dismiss();
+                Intent intent = new Intent(mContext, IndicatorSettingActivity.class);
+                intent.putExtra("type", "enter_sell");
+                intent.putExtra("strategy_name", strategyNameList.get(position));
+                mContext.startActivity(intent);
+            }
+        });
+
+        settingDialog.findViewById(R.id.llClearBuySetting).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                settingDialog.dismiss();
+                Intent intent = new Intent(mContext, IndicatorSettingActivity.class);
+                intent.putExtra("type", "clear_buy");
+                intent.putExtra("strategy_name", strategyNameList.get(position));
+                mContext.startActivity(intent);
+            }
+        });
+
+        settingDialog.findViewById(R.id.llClearSellSetting).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                settingDialog.dismiss();
+                Intent intent = new Intent(mContext, IndicatorSettingActivity.class);
+                intent.putExtra("type", "clear_sell");
+                intent.putExtra("strategy_name", strategyNameList.get(position));
+                mContext.startActivity(intent);
+            }
+        });
+
+
+
+
+//        /* 이 함수 안에 원하는 디자인과 기능을 구현하면 된다. */
+//
+//        // 위젯 연결 방식은 각자 취향대로~
+//        // '아래 아니오 버튼'처럼 일반적인 방법대로 연결하면 재사용에 용이하고,
+//        // '아래 네 버튼'처럼 바로 연결하면 일회성으로 사용하기 편함.
+//        // *주의할 점: findViewById()를 쓸 때는 -> 앞에 반드시 다이얼로그 이름을 붙여야 한다.
+//
+//        // 아니오 버튼
+//        Button noBtn = settingDialog.findViewById(R.id.noBtn);
+//        noBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                getB
+//                // 원하는 기능 구현
+//                dilaog01.dismiss(); // 다이얼로그 닫기
+//            }
+//        });
+//        // 네 버튼
+//        dilaog01.findViewById(R.id.yesBtn).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // 원하는 기능 구현
+//                finish();           // 앱 종료
+//            }
+//        });
+
+
+
+
+    }
+
+    public static void strategyRemove(int position)
+    {
+        // this line adds the data of your EditText and puts in your array
+        strategyNameList.remove(position);
+        // next thing you have to do is check if your adapter has changed
+        adapter.notifyDataSetChanged();
+    }
+
+    public void onBackPressed() {
+        if (System.currentTimeMillis() > this.backpressedTime + 2000) {
+            this.backpressedTime = System.currentTimeMillis();
+            Toast.makeText(this, "'뒤로' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+        } else if (System.currentTimeMillis() <= this.backpressedTime + 2000) {
+            finish();
+        }
+    }
+
 }

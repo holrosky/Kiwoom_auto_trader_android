@@ -1,5 +1,7 @@
 package com.example.kiwoomautotrader;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -32,14 +34,13 @@ public class KiwoomIDSettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_setting);
 
+        setTitle("키움 ID 설정");
+
         sharedPreferences = getApplicationContext().getSharedPreferences("sharedPreferences", 0);
         editor = sharedPreferences.edit();
 
         etAccountInput = (EditText) findViewById(R.id.etAccountInput);
         btnAccConfirm = (Button) findViewById(R.id.btnAccConfirm);
-
-
-
 
         btnAccConfirm.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -47,10 +48,20 @@ public class KiwoomIDSettingActivity extends AppCompatActivity {
 
                     String kiwoomID = etAccountInput.getText().toString();
                     if (kiwoomID.matches("")) {
-                        int color = Color.parseColor("#f55c51");
-                        Snackbar mSnackBar = Snackbar.make(view, "키움 아이디를 입력해주세요!", Snackbar.LENGTH_SHORT);
-                        mSnackBar.getView().setBackgroundColor(color);
-                        mSnackBar.show();
+                        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                switch (which){
+                                    case DialogInterface.BUTTON_POSITIVE:
+
+                                        break;
+
+                                }
+                            }
+                        };
+                        AlertDialog.Builder builder = new AlertDialog.Builder(btnAccConfirm.getContext());
+                        builder.setMessage("키움 ID를 입력해주세요!").setPositiveButton("확인", dialogClickListener).show();
                     }
 
                    else
@@ -68,5 +79,9 @@ public class KiwoomIDSettingActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void onBackPressed() {
+        finish();
     }
 }
