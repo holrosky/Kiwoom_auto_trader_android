@@ -30,8 +30,10 @@ public class MainCustomAdapter extends ArrayAdapter {
     private TextView tvStrategyName;
     private Button btnDelete;
     private Button btnStartStop;
+    private Button btnClear;
     private Button btnSetting;
     private Activity context;
+    //private boolean isRunning;
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -53,6 +55,7 @@ public class MainCustomAdapter extends ArrayAdapter {
         tvStrategyName = (TextView) row.findViewById(R.id.tvStrategyName);
         btnStartStop = (Button) row.findViewById(R.id.btnStartStop);
         btnDelete = (Button) row.findViewById(R.id.btnDelete);
+        btnClear = (Button) row.findViewById(R.id.btnClear);
         btnSetting = (Button) row.findViewById(R.id.btnSetting);
 
         tvStrategyName.setText(strategyName.get(position));
@@ -61,7 +64,7 @@ public class MainCustomAdapter extends ArrayAdapter {
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(sharedPreferences.getString("strategy_json", null));
-            if(jsonObject.getJSONArray("strategy_list").getJSONObject(position).getString("runnig_status").equals("true"))
+            if(jsonObject.getJSONArray("strategy_list").getJSONObject(position).getString("running_status").equals("true"))
                 isRunning = true;
             else
                 isRunning = false;
@@ -74,111 +77,22 @@ public class MainCustomAdapter extends ArrayAdapter {
             btnStartStop.setText("중지");
             btnStartStop.setBackgroundColor(Color.RED);
             btnDelete.setEnabled(false);
-            btnSetting.setEnabled(false);
         }
         else
         {
             btnStartStop.setText("시작");
             btnStartStop.setBackgroundColor(Color.GREEN);
             btnDelete.setEnabled(true);
-            btnSetting.setEnabled(true);
         }
 
-        tvStrategyName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context,"Text Working",Toast.LENGTH_SHORT).show();
-            }
-        });
 
-        //To lazy to implement interface
         btnStartStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Button btnStartStop = (Button)v;
-                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        switch (which) {
-                            case DialogInterface.BUTTON_POSITIVE:
-                                try {
-
-                                    JSONObject jsonObject = new JSONObject(sharedPreferences.getString("strategy_json", null));
-
-                                    if(jsonObject.getJSONArray("strategy_list").getJSONObject(position).getString("runnig_status").equals("false"))
-                                    {
-                                        if (jsonObject.getJSONArray("strategy_list").getJSONObject(position).getString("strategy_name").equals("") ||
-                                                jsonObject.getJSONArray("strategy_list").getJSONObject(position).getString("sCode").equals("") ||
-                                                jsonObject.getJSONArray("strategy_list").getJSONObject(position).getString("max_loss").equals("") ||
-                                                jsonObject.getJSONArray("strategy_list").getJSONObject(position).getString("max_profit").equals("") ||
-                                                jsonObject.getJSONArray("strategy_list").getJSONObject(position).getString("start_hour").equals("") ||
-                                                jsonObject.getJSONArray("strategy_list").getJSONObject(position).getString("start_min").equals("") ||
-                                                jsonObject.getJSONArray("strategy_list").getJSONObject(position).getString("end_hour").equals("") ||
-                                                jsonObject.getJSONArray("strategy_list").getJSONObject(position).getString("end_min").equals("") ||
-                                                jsonObject.getJSONArray("strategy_list").getJSONObject(position).getJSONArray("enter_buy").length() == 0 ||
-                                                jsonObject.getJSONArray("strategy_list").getJSONObject(position).getJSONArray("enter_sell").length() == 0 ||
-                                                jsonObject.getJSONArray("strategy_list").getJSONObject(position).getJSONArray("clear_buy").length() == 0 ||
-                                                jsonObject.getJSONArray("strategy_list").getJSONObject(position).getJSONArray("clear_sell").length() == 0 )
-                                        {
-                                            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-
-                                                    switch (which){
-                                                        case DialogInterface.BUTTON_POSITIVE:
-
-                                                            break;
-
-                                                    }
-                                                }
-                                            };
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(btnStartStop.getContext());
-                                            builder.setMessage("모든 값을 입력후 시작해주세요!").setPositiveButton("확인", dialogClickListener).show();
-                                        }
-                                        else
-                                            jsonObject.getJSONArray("strategy_list").getJSONObject(position).put("runnig_status", "true");
-
-                                    }
-                                    else
-                                        jsonObject.getJSONArray("strategy_list").getJSONObject(position).put("runnig_status", "false");
-
-                                    editor.putString("strategy_json", jsonObject.toString());
-                                    editor.commit();
-
-
-                                    Log.d(LOG_TAG, sharedPreferences.getString("strategy_json", null));
-
-                                    notifyDataSetChanged();
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                break;
-
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                //No button clicked
-                                break;
-                        }
-                    }
-                };
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                String dialogMessage = "";
-                if (btnStartStop.getText().toString().equals("시작"))
-                {
-                    dialogMessage = " 전략을 시작하시겠습니까?";
-                }
-                else
-                {
-                    dialogMessage = " 전략을 중지하시겠습니까?";
-                }
-                builder.setMessage(strategyName.get(position) + dialogMessage).setPositiveButton("예", dialogClickListener)
-                        .setNegativeButton("취소", dialogClickListener).show();
+                MainActivity.strategyStopRun(position);
             }
         });
 
-
-        //To lazy to implement interface
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -188,20 +102,17 @@ public class MainCustomAdapter extends ArrayAdapter {
 
                         switch (which){
                             case DialogInterface.BUTTON_POSITIVE:
+                                Toast.makeText(MainActivity.mContext,"삭제중..", Toast.LENGTH_SHORT).show();
+                                JSONObject temp = new JSONObject();
                                 try {
-                                    JSONObject jsonObject = new JSONObject(sharedPreferences.getString("strategy_json", null));
-                                    jsonObject.getJSONArray("strategy_list").remove(position);
-
-                                    editor.putString("strategy_json", jsonObject.toString());
-                                    editor.commit();
-
-                                    Log.d(LOG_TAG, sharedPreferences.getString("strategy_json", null));
-
+                                    temp.put("command", "remove_strategy_from_android");
+                                    temp.put("position", position);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
 
-                                MainActivity.strategyRemove(position);
+                                MainActivity.publishMsg(temp.toString());
+
                                 break;
 
                             case DialogInterface.BUTTON_NEGATIVE:
@@ -217,10 +128,19 @@ public class MainCustomAdapter extends ArrayAdapter {
         });
 
 
+        boolean finalIsRunning = isRunning;
         btnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.strategySetting(position);
+                MainActivity.strategySetting(position, finalIsRunning);
+            }
+        });
+
+        btnClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.mContext,"청산중...", Toast.LENGTH_SHORT).show();
+                MainActivity.strategyClear(position);
             }
         });
         return  row;

@@ -56,6 +56,26 @@
                 android:orientation="vertical">
 
                 <RadioGroup
+                    android:id="@+id/rgTimeType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkedButton="@id/default1"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/default1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="실시간"/>
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="직전봉"/>
+                </RadioGroup>
+
+                <RadioGroup
                     android:id="@+id/rgIndicatorTimeType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -107,9 +127,6 @@
 
                 </LinearLayout>
 
-
-
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -121,35 +138,17 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="RSI Period / Signal 값 : "
+                        android:text="Short : "
                         android:textSize="20sp" />
 
 
                     <EditText
-                        android:id="@+id/etRsiPeriod"
-                        android:layout_width="60dp"
-                        android:layout_height="30dp"
-                        android:layout_margin="5dp"
-                        android:background="@drawable/edittext_rounded_corner_rectangle"
-                        android:gravity="center"
-                        android:inputType="number"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:layout_marginRight="5dp"
-                        android:text="/"
-                        android:textSize="20sp" />
-
-                    <EditText
-                        android:id="@+id/etRsiSignal"
+                        android:id="@+id/etMACDShort"
                         android:layout_width="60dp"
                         android:layout_height="30dp"
                         android:background="@drawable/edittext_rounded_corner_rectangle"
                         android:gravity="center"
-                        android:layout_margin="5dp"
+                        android:layout_marginLeft="5dp"
                         android:inputType="number"
                         android:textSize="20sp" />
 
@@ -166,39 +165,68 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="RSI 만족 범위 값 : "
+                        android:text="Long : "
                         android:textSize="20sp" />
 
 
                     <EditText
-                        android:id="@+id/etRsiFrom"
-                        android:layout_width="60dp"
-                        android:layout_height="30dp"
-                        android:layout_margin="5dp"
-                        android:background="@drawable/edittext_rounded_corner_rectangle"
-                        android:gravity="center"
-                        android:inputType="number"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:layout_marginRight="5dp"
-                        android:text="~"
-                        android:textSize="20sp" />
-
-                    <EditText
-                        android:id="@+id/etRsiTo"
+                        android:id="@+id/etMACDLong"
                         android:layout_width="60dp"
                         android:layout_height="30dp"
                         android:background="@drawable/edittext_rounded_corner_rectangle"
                         android:gravity="center"
-                        android:layout_margin="5dp"
+                        android:layout_marginLeft="5dp"
                         android:inputType="number"
                         android:textSize="20sp" />
 
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Signal : "
+                        android:textSize="20sp" />
+
+
+                    <EditText
+                        android:id="@+id/etMACDSignal"
+                        android:layout_width="60dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/edittext_rounded_corner_rectangle"
+                        android:gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:inputType="number"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <RadioGroup
+                    android:id="@+id/rgMACDCross"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkedButton="@id/default6"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/default6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="골드크로스" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="데드크로스" />
+                </RadioGroup>
 
                 <LinearLayout
                     android:id="@+id/llTargetClearTick"
@@ -246,7 +274,6 @@
                         android:textSize="20sp" />
 
                 </LinearLayout>
-
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

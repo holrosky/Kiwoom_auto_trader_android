@@ -5,6 +5,7 @@ import static com.amazonaws.mobile.auth.core.internal.util.ThreadUtils.runOnUiTh
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.iot.AWSIotKeystoreHelper;
@@ -20,10 +21,10 @@ import com.amazonaws.services.iot.model.AttachPrincipalPolicyRequest;
 import com.amazonaws.services.iot.model.CreateKeysAndCertificateRequest;
 import com.amazonaws.services.iot.model.CreateKeysAndCertificateResult;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.security.KeyStore;
 import java.util.UUID;
 
@@ -43,6 +44,7 @@ public class AWSMQTT {
     private String keystoreName;
     private String keystorePassword;
     private String certificateId;
+    private boolean isConnected;
 
     AWSIotMqttManager mqttManager;
     AWSIotClient mIotAndroidClient;
@@ -51,12 +53,16 @@ public class AWSMQTT {
     CognitoCachingCredentialsProvider credentialsProvider;
 
     private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     public AWSMQTT(Context context)
     {
         clientId = UUID.randomUUID().toString();
 
         sharedPreferences = context.getSharedPreferences("sharedPreferences", 0);
+        editor = sharedPreferences.edit();
+
+        isConnected = false;
 
         // Initialize the AWS Cognito credentials provider
         credentialsProvider = new CognitoCachingCredentialsProvider(
@@ -174,14 +180,18 @@ public class AWSMQTT {
                                 if (status == AWSIotMqttClientStatusCallback.AWSIotMqttClientStatus.Connecting) {
                                     MainActivity.setMqttServerStatus("연결중");
                                 } else if (status == AWSIotMqttClientStatusCallback.AWSIotMqttClientStatus.Connected) {
+                                    isConnected = true;
                                     MainActivity.setMqttServerStatus("연결됨");
-                                    subscribe("python/" + sharedPreferences.getString("kiwoom_id", "") + "/" + sharedPreferences.getString("trade_server", ""));
+                                    subscribe();
+
+
                                 } else if (status == AWSIotMqttClientStatusCallback.AWSIotMqttClientStatus.Reconnecting) {
                                     MainActivity.setMqttServerStatus("다시 연결중");
                                     if (throwable != null) {
                                         Log.e(LOG_TAG, "Connection error.", throwable);
                                     }
                                 } else if (status == AWSIotMqttClientStatusCallback.AWSIotMqttClientStatus.ConnectionLost) {
+                                    isConnected = false;
                                     MainActivity.setMqttServerStatus("연결 끊김");
                                     if (throwable != null) {
                                         Log.e(LOG_TAG, "Connection error.", throwable);
@@ -205,31 +215,75 @@ public class AWSMQTT {
         mqttManager.disconnect();
     }
 
-
-    public void publish(String msg, String topic)
+    public boolean isConnected()
     {
-        topic = "android/" + sharedPreferences.getString("kiwoom_id", "") + "/" + sharedPreferences.getString("trade_server", "") + "/" + topic;
+        return isConnected;
+    }
+
+    public void publish(String msg)
+    {
+        String topic = sharedPreferences.getString("sCode", null) + "/" + sharedPreferences.getString("kiwoom_id", null) + "/"  + sharedPreferences.getString("trade_mode", "test") + "/android";
         mqttManager.publishString(msg, topic, AWSIotMqttQos.QOS0);
     }
 
-    public void subscribe(String topic) {
+    public void subscribe() {
         try {
-            mqttManager.subscribeToTopic(topic + "/#", AWSIotMqttQos.QOS0, new AWSIotMqttNewMessageCallback() {
+            mqttManager.subscribeToTopic(sharedPreferences.getString("sCode", null) + "/" + sharedPreferences.getString("kiwoom_id", null) + "/"  + sharedPreferences.getString("trade_mode", "test") + "/#", AWSIotMqttQos.QOS0, new AWSIotMqttNewMessageCallback() {
                 public void onMessageArrived(String topic, final byte[] data) {
                     runOnUiThread(new Runnable() {
                         public void run() {
                             try {
-                                if (topic.contains("running_state"))
-                                {
-                                    Log.d(LOG_TAG, "It's topic is for run");
-                                }
-                                MainActivity.resetTraderStatusCount();
                                 String message = new String(data, "UTF-8");
-                                JSONObject jsonObject = new JSONObject(message);
-                                Log.d(LOG_TAG, "Message received: " + jsonObject.toString());
+                                message = message.replaceAll("'", "\"");
+                                JSONObject messageJson = new JSONObject(message);
 
-                            } catch (UnsupportedEncodingException | JSONException e2) {
-                                Log.e(LOG_TAG, "Message encoding error.", e2);
+                                Log.d(LOG_TAG, "Message received: " + message);
+                                if (topic.contains("auto_trader"))
+                                {
+                                    if (messageJson.getString("command").equals("running_state"))
+                                    {
+                                        MainActivity.resetTraderStatusCount();
+                                    }
+                                    else if (messageJson.getString("command").equals("json_state_from_auto_trader") || messageJson.getString("command").equals("json_update_from_auto_trader"))
+                                    {
+                                        Log.e(LOG_TAG, message);
+
+                                        messageJson.remove("command");
+
+                                        JSONArray accArr = messageJson.getJSONArray("acc_num_list");
+                                        MainActivity.setAcc(accArr);
+
+                                        editor.putString("strategy_json", messageJson.toString());
+                                        editor.commit();
+
+                                        MainActivity.setStrategyList(messageJson);
+
+                                        Log.d(LOG_TAG, messageJson.toString());
+                                    }
+                                    else if (messageJson.getString("command").equals("clear_position_from_auto_trader"))
+                                    {
+                                        if (Integer.valueOf(messageJson.getString("result")) == 0)
+                                            Toast.makeText(MainActivity.mContext,"청산 완료!", Toast.LENGTH_SHORT).show();
+                                        else if (Integer.valueOf(messageJson.getString("result")) == -1)
+                                            Toast.makeText(MainActivity.mContext,"해당 전략으로 진입한 포지션이 없습니다!", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else if (messageJson.getString("command").equals("remove_result_from_auto_trader"))
+                                        MainActivity.strategyRemove(messageJson);
+
+                                    else if (messageJson.getString("command").equals("profit_from_auto_trader"))
+                                        MainActivity.setProfit(messageJson);
+
+                                    else if (messageJson.getString("command").equals("length_from_auto_trader"))
+                                        MainActivity.resetTraderStatusCount();
+                                        MainActivity.setLengthInfo(messageJson);
+
+                                }
+
+
+
+
+                            } catch (Exception e) {
+                                Log.e(LOG_TAG, "Message encoding error.", e);
                             }
                         }
                     });
@@ -239,6 +293,18 @@ public class AWSMQTT {
         } catch (Exception e) {
             Log.e(LOG_TAG, "Subscription error.", e);
         }
+    }
+
+    public void requestJsonState()
+    {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("command", "json_state_require_from_android");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        publish(jsonObject.toString());
     }
 
 }

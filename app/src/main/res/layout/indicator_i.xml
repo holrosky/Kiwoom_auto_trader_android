@@ -160,13 +160,13 @@
 
 
                 <EditText
-                    android:id="@+id/etTickDiffFrom"
+                    android:id="@+id/etFirstTickDiffFrom"
                     android:layout_width="60dp"
                     android:layout_height="30dp"
                     android:background="@drawable/edittext_rounded_corner_rectangle"
                     android:gravity="center"
                     android:layout_marginLeft="5dp"
-                    android:inputType="number"
+                    android:inputType="number|numberSigned"
                     android:textSize="20sp" />
 
                 <TextView
@@ -179,16 +179,64 @@
 
 
                 <EditText
-                    android:id="@+id/etTickDiffTo"
+                    android:id="@+id/etFirstTickDiffTo"
                     android:layout_width="60dp"
                     android:layout_height="30dp"
                     android:background="@drawable/edittext_rounded_corner_rectangle"
                     android:gravity="center"
                     android:layout_marginLeft="5dp"
-                    android:inputType="number"
+                    android:inputType="number|numberSigned"
                     android:textSize="20sp" />
 
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llTargetClearTick"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="목표 청산 틱범위 : "
+                    android:textSize="20sp" />
+
+
+                <EditText
+                    android:id="@+id/etFirstTargetClearTickFrom"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/edittext_rounded_corner_rectangle"
+                    android:gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:inputType="number|numberSigned"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="~"
+                    android:textSize="20sp" />
+
+
+                <EditText
+                    android:id="@+id/etFirstTargetClearTickTo"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/edittext_rounded_corner_rectangle"
+                    android:gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:inputType="number|numberSigned"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+
         </LinearLayout>
 
         <LinearLayout
@@ -270,95 +318,104 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 android:text="!!위 빈칸에 큰 수 (ex. 100)를 넣으면 절대 만족하지 않습니다!!"
                 android:textSize="13sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_margin="10dp"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:orientation="horizontal"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="가격지표 3"
-            android:textSize="20sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_gravity="center"
                 android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="당일 중심가 - "
+                    android:text="틱 차이 : "
                     android:textSize="20sp" />
 
-                <RadioGroup
-                    android:id="@+id/rgThirdType"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checkedButton="@id/default5"
-                    android:orientation="horizontal">
 
-                    <RadioButton
-                        android:id="@+id/default5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="전일저가" />
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="전일고가" />
-                </RadioGroup>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal">
                 <EditText
-                    android:id="@+id/etThirdNumerator"
+                    android:id="@+id/etSecondTickDiffFrom"
                     android:layout_width="60dp"
                     android:layout_height="30dp"
                     android:background="@drawable/edittext_rounded_corner_rectangle"
                     android:gravity="center"
                     android:layout_marginLeft="5dp"
-                    android:inputType="number"
+                    android:inputType="number|numberSigned"
                     android:textSize="20sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" / 10 "
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="~"
+                    android:textSize="20sp" />
+
+
+                <EditText
+                    android:id="@+id/etSecondTickDiffTo"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/edittext_rounded_corner_rectangle"
+                    android:gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:inputType="number|numberSigned"
                     android:textSize="20sp" />
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/llTargetClearTick"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:gravity="center"
-                android:layout_weight="1"
-                android:text="!!위 빈칸에 큰 수 (ex. 100)를 넣으면 절대 만족하지 않습니다!!"
-                android:textSize="13sp" />
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="목표 청산 틱범위 : "
+                    android:textSize="20sp" />
+
+
+                <EditText
+                    android:id="@+id/etSecondTargetClearTickFrom"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/edittext_rounded_corner_rectangle"
+                    android:gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:inputType="number|numberSigned"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="~"
+                    android:textSize="20sp" />
+
+
+                <EditText
+                    android:id="@+id/etSecondTargetClearTickTo"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/edittext_rounded_corner_rectangle"
+                    android:gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:inputType="number|numberSigned"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
         </LinearLayout>
-
-
     </LinearLayout>
 </androidx.cardview.widget.CardView>

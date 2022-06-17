@@ -73,26 +73,210 @@
                 app:layout_constraintTop_toBottomOf="@+id/etStrategyName" />
 
             <Button
-                android:id="@+id/btnTradeServer"
-                android:layout_width="77dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="16dp"
-                android:text="모의서버"
-                android:textSize="10sp"
-                app:layout_constraintEnd_toStartOf="@+id/btnAccChange"
-                app:layout_constraintTop_toTopOf="@+id/guidelineTop" />
+                android:id="@+id/btnAccChange"
+                android:layout_width="85dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="70dp"
+                android:layout_marginTop="8dp"
+                android:text="계정변경"
+                android:textSize="11sp"
+                app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/btnTradeTypeChange"
+                app:layout_constraintTop_toBottomOf="@+id/tvAutoTrader" />
 
             <Button
-                android:id="@+id/btnAccChange"
-                android:layout_width="77dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
-                android:text="계정변경"
-                android:textSize="10sp"
+                android:id="@+id/btnTradeTypeChange"
+                android:layout_width="85dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="70dp"
+                android:text="모의투자"
+                android:textSize="11sp"
+                app:layout_constraintEnd_toStartOf="@+id/btnAccChange"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+                app:layout_constraintTop_toBottomOf="@+id/tvAutoTrader" />
+
+            <Button
+                android:id="@+id/btnScodeChange"
+                android:layout_width="85dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:text="종목변경"
+                android:textSize="11sp"
+                app:layout_constraintEnd_toStartOf="@+id/btnAccChange"
+                app:layout_constraintStart_toEndOf="@+id/btnTradeTypeChange"
+                app:layout_constraintTop_toBottomOf="@+id/tvAutoTrader" />
+
+
+            <LinearLayout
+                android:id="@+id/llProfit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
-                app:layout_constraintTop_toTopOf="@+id/guidelineTop" />
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+                app:layout_constraintTop_toBottomOf="@+id/btnProfitHide">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp">
+
+                    <TextView
+                        android:id="@+id/tvDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="날짜 :"
+                        app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+                        app:layout_constraintTop_toBottomOf="@+id/tvProfit" />
+
+                    <TextView
+                        android:id="@+id/tvDateInput"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:gravity="center"
+                        android:text="2022-04-21"
+                        android:textSize="15sp"
+                        app:layout_constraintStart_toEndOf="@+id/tvDate"
+                        app:layout_constraintTop_toBottomOf="@+id/tvProfit" />
+
+                    <Button
+                        android:id="@+id/btnSelectDate"
+                        android:layout_width="85dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:text="날짜선택"
+                        android:textSize="11sp"
+                        app:layout_constraintStart_toEndOf="@+id/tvDateInput"
+                        app:layout_constraintTop_toBottomOf="@+id/tvProfit" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp">
+
+                    <TextView
+                        android:id="@+id/tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="계좌선택 :" />
+
+                    <Spinner
+                        android:id="@+id/spnAccount"
+                        android:layout_width="150dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:gravity="center" />
+
+                    <Button
+                        android:id="@+id/btnGetProfit"
+                        android:layout_width="77dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:text="조회"
+                        android:textSize="11sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvTradeProfit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="청산손익:" />
+
+                        <EditText
+                            android:id="@+id/etTradeProfit"
+                            android:layout_width="90dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/edittext_rounded_corner_rectangle"
+                            android:enabled="false"
+                            android:padding="5dp"
+                            android:textColor="@drawable/edit_text_select_color" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvFee"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="수수료:" />
+
+                        <EditText
+                            android:id="@+id/etFee"
+                            android:layout_width="90dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/edittext_rounded_corner_rectangle"
+                            android:enabled="false"
+                            android:padding="5dp"
+                            android:textColor="@drawable/edit_text_select_color" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvTotalProfit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="순손익:" />
+
+                        <EditText
+                            android:id="@+id/etTotalProfit"
+                            android:layout_width="90dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/edittext_rounded_corner_rectangle"
+                            android:enabled="false"
+                            android:padding="5dp"
+                            android:textColor="@drawable/edit_text_select_color" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/lineSecond"
@@ -103,7 +287,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
                 app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
-                app:layout_constraintTop_toBottomOf="@+id/etTradeProfit">
+                app:layout_constraintTop_toBottomOf="@+id/llProfit">
 
             </LinearLayout>
 
@@ -111,181 +295,79 @@
                 android:id="@+id/tvProfit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 android:text="손익 조회"
                 app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
                 app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
                 app:layout_constraintTop_toBottomOf="@+id/lineFirst" />
 
-            <TextView
-                android:id="@+id/tvDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="날짜 :"
-                app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
-                app:layout_constraintTop_toBottomOf="@+id/tvProfit" />
-
-            <TextView
-                android:id="@+id/tvDateInput"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
-                android:textSize="15sp"
-                android:text="2022-04-21"
-                app:layout_constraintStart_toEndOf="@+id/tvDate"
-                app:layout_constraintTop_toBottomOf="@+id/tvProfit" />
-
             <Button
-                android:id="@+id/btnSelectDate"
+                android:id="@+id/btnProfitHide"
                 android:layout_width="77dp"
                 android:layout_height="48dp"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="날짜선택"
-                android:textSize="10sp"
-                app:layout_constraintStart_toEndOf="@+id/tvDateInput"
-                app:layout_constraintTop_toBottomOf="@+id/tvProfit" />
-
-            <TextView
-                android:id="@+id/tvAccount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:text="계좌선택 :"
-                app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
-                app:layout_constraintTop_toBottomOf="@+id/tvDate" />
-
-            <Spinner
-                android:id="@+id/spnAccount"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="14dp"
-                app:layout_constraintStart_toEndOf="@+id/tvAccount"
-                app:layout_constraintTop_toBottomOf="@+id/btnSelectDate" />
-
-            <Button
-                android:id="@+id/btnGetProfit"
-                android:layout_width="77dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                android:text="조회"
-                android:textSize="10sp"
-                app:layout_constraintStart_toEndOf="@+id/spnAccount"
-                app:layout_constraintTop_toBottomOf="@+id/btnSelectDate" />
-
-            <TextView
-                android:id="@+id/tvTradeProfit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="청산손익:"
-                app:layout_constraintEnd_toStartOf="@+id/etTradeProfit"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
-                app:layout_constraintTop_toBottomOf="@+id/tvAccount" />
-
-            <EditText
-                android:id="@+id/etTradeProfit"
-                android:layout_width="57dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/edittext_rounded_corner_rectangle"
-                android:enabled="false"
-                android:padding="5dp"
-                android:textColor="@drawable/edit_text_select_color"
-                app:layout_constraintEnd_toStartOf="@+id/tvFee"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/tvTradeProfit"
-                app:layout_constraintTop_toBottomOf="@+id/tvAccount" />
-
-            <TextView
-                android:id="@+id/tvFee"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
-                android:text="수수료:"
-                app:layout_constraintEnd_toStartOf="@+id/etFee"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/etTradeProfit"
-                app:layout_constraintTop_toBottomOf="@+id/tvAccount" />
-
-            <EditText
-                android:id="@+id/etFee"
-                android:layout_width="57dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/edittext_rounded_corner_rectangle"
-                android:enabled="false"
-                android:padding="5dp"
-                android:textColor="@drawable/edit_text_select_color"
-                app:layout_constraintEnd_toStartOf="@+id/tvTotalProfit"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/tvFee"
-                app:layout_constraintTop_toBottomOf="@+id/tvAccount" />
-
-            <TextView
-                android:id="@+id/tvTotalProfit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
-                android:text="순손익:"
-                app:layout_constraintEnd_toStartOf="@+id/etTotalProfit"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/etFee"
-                app:layout_constraintTop_toBottomOf="@+id/tvAccount" />
-
-            <EditText
-                android:id="@+id/etTotalProfit"
-                android:layout_width="57dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/edittext_rounded_corner_rectangle"
-                android:enabled="false"
-                android:padding="5dp"
-                android:textColor="@drawable/edit_text_select_color"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginRight="30dp"
+                android:text="숨기기"
+                android:textSize="11sp"
                 app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/tvTotalProfit"
-                app:layout_constraintTop_toBottomOf="@+id/tvAccount" />
+                app:layout_constraintTop_toBottomOf="@+id/lineFirst" />
 
             <LinearLayout
                 android:id="@+id/lineFirst"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:background="@android:color/darker_gray"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
                 app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
-                app:layout_constraintTop_toBottomOf="@+id/tvAutoTraderStatus"></LinearLayout>
+                app:layout_constraintTop_toBottomOf="@+id/btnAccChange">
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/etQueueLen"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edittext_rounded_corner_rectangle"
+                android:enabled="false"
+                android:padding="5dp"
+                app:layout_constraintEnd_toStartOf="@+id/etIndicatorLen"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@id/guidelineLeft"
+                app:layout_constraintTop_toBottomOf="@+id/lineSecond" />
+
+            <EditText
+                android:id="@+id/etIndicatorLen"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edittext_rounded_corner_rectangle"
+                android:enabled="false"
+                android:padding="5dp"
+                app:layout_constraintStart_toEndOf="@+id/etQueueLen"
+                app:layout_constraintTop_toBottomOf="@+id/lineSecond" />
 
             <TextView
                 android:id="@+id/tvStrategy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
                 android:text="전략 리스트"
-                app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
-                app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+                app:layout_constraintStart_toEndOf="@+id/etIndicatorLen"
                 app:layout_constraintTop_toBottomOf="@+id/lineSecond" />
 
             <Button
                 android:id="@+id/btnAddStrategy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="30dp"
                 android:text="추가"
                 android:textSize="15sp"
-                app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
+                app:layout_constraintEnd_toEndOf="@id/guidelineRight"
                 app:layout_constraintTop_toBottomOf="@+id/lineSecond" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -296,7 +378,7 @@
             android:layout_marginTop="10dp">
 
             <ListView
-                android:id="@+id/list"
+                android:id="@+id/listTime"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:divider="@null"

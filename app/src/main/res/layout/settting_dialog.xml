@@ -99,6 +99,22 @@
                 android:text="매도 청산 설정" />
 
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llAIClearSetting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="15dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="AI 청산 설정" />
+
+        </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
     <!--<?xml version="1.0" encoding="utf-8"?>-->

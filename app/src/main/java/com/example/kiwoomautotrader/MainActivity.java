@@ -1,11 +1,17 @@
 package com.example.kiwoomautotrader;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
+import androidx.lifecycle.ProcessLifecycleOwner;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,9 +20,11 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -30,18 +38,21 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LifecycleObserver {
     static final String LOG_TAG = MainActivity.class.getCanonicalName();
 
-    private static Context mContext;
+    public static Context mContext;
 
-
-    private static final String kiwoomID = "artanis0";
+    private static String trade_mode;
 
     private static TextView tvMsgServerStatus;
     private static TextView tvAutoTraderStatus;
-    private static Button btnTradeServer;
+    private static Button btnTradeTypeChange;
+    private static Button btnScodeChange;
     private static Button btnAccChange;
+
+    private static Button btnProfitHide;
+    private static LinearLayout llProfit;
 
     private static TextView tvDateInput;
     private static Button btnSelectDate;
@@ -52,30 +63,55 @@ public class MainActivity extends AppCompatActivity {
     private static EditText etFee;
     private static EditText etTotalProfit;
 
+    private static EditText etQueueLen;
+    private static EditText etIndicatorLen;
+
+
     private static TextView tvStrategy;
     private static Button btnAddStrategy;
     private static ListView list;
 
     private static ArrayList<String> strategyNameList;
+    private static ArrayList<String> accountList;
     private static MainCustomAdapter adapter;
 
-    private static int offCount;
-    private final Handler handler = new Handler() {
+    private static int autoTraderOffCount;
+
+    private static boolean runningStateFlag;
+    private static boolean jsonRequireFlag;
+
+    private final Handler handlerForStop = new Handler() {
         public void handleMessage(Message msg) {
             tvAutoTraderStatus.setText("연결 끊김");
             setUIForStop();
+            isClientAndServerConnected = false;
+            jsonRequireFlag = true;
         }
     };
 
-    private static boolean isUIDisabled;
-    private AWSMQTT AWSMQTTClient;
-    private SharedPreferences sharedPreferences;
+    private final Handler handlerForRunning = new Handler() {
+        public void handleMessage(Message msg) {
+
+            tvAutoTraderStatus.setText("연결됨");
+            if (jsonRequireFlag)
+                AWSMQTTClient.requestJsonState();
+            setUIForRunning();
+            isClientAndServerConnected = true;
+            jsonRequireFlag = false;
+        }
+    };
+
+
+    private static boolean isClientAndServerConnected;
+    private static AWSMQTT AWSMQTTClient;
+    private static SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
     private long backpressedTime = 0;
 
 
 
+    @SuppressLint("LongLogTag")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
 
         sharedPreferences = getApplicationContext().getSharedPreferences("sharedPreferences", 0);
         editor = sharedPreferences.edit();
+
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
 
         if (sharedPreferences.getString("strategy_json", null) == null)
         {
@@ -103,15 +141,41 @@ public class MainActivity extends AppCompatActivity {
         if (sharedPreferences.getString("kiwoom_id", null) == null)
         {
             finish();
-            Intent intent = new Intent(getApplicationContext(), KiwoomIDSettingActivity.class);
+            Intent intent = new Intent(getApplicationContext(), KiwoomIDAndScodeSettingActivity.class);
+            intent.putExtra("type", "kiwoom_id");
             startActivity(intent);
         }
 
-        String serverType = "";
+        if (sharedPreferences.getString("sCode", null) == null)
+        {
+            finish();
+            Intent intent = new Intent(getApplicationContext(), KiwoomIDAndScodeSettingActivity.class);
+            intent.putExtra("type", "sCode");
+            startActivity(intent);
+        }
+
+        trade_mode = sharedPreferences.getString("trade_mode", "test");
 
         tvMsgServerStatus = (TextView) findViewById(R.id.etStrategyName);
         tvAutoTraderStatus = (TextView) findViewById(R.id.tvAutoTraderStatus);
-        btnTradeServer = (Button) findViewById(R.id.btnTradeServer);
+
+        btnProfitHide = (Button) findViewById(R.id.btnProfitHide);
+        llProfit = (LinearLayout) findViewById(R.id.llProfit);
+
+        if (sharedPreferences.getBoolean("profit_hidden", false)) {
+            btnProfitHide.setText("보이기");
+            llProfit.setVisibility(View.GONE);
+        }
+
+        else
+        {
+            btnProfitHide.setText("숨기기");
+            llProfit.setVisibility(View.VISIBLE);
+        }
+
+
+        btnTradeTypeChange = (Button) findViewById(R.id.btnTradeTypeChange);
+        btnScodeChange = (Button) findViewById(R.id.btnScodeChange);
         btnAccChange = (Button) findViewById(R.id.btnAccChange);
 
         tvDateInput = (TextView) findViewById(R.id.tvDateInput);
@@ -123,18 +187,18 @@ public class MainActivity extends AppCompatActivity {
         etFee = (EditText) findViewById(R.id.etFee);
         etTotalProfit = (EditText) findViewById(R.id.etTotalProfit);
 
+        etQueueLen = (EditText) findViewById(R.id.etQueueLen);
+        etIndicatorLen = (EditText) findViewById(R.id.etIndicatorLen);
+
         tvStrategy = (TextView) findViewById(R.id.tvStrategy);
         btnAddStrategy = (Button) findViewById(R.id.btnAddStrategy);
-        list = (ListView) findViewById(R.id.list);
+        list = (ListView) findViewById(R.id.listTime);
 
-        if (sharedPreferences.getString("trade_server", "test").equals("test")) {
-            serverType = "모의서버";
-            btnTradeServer.setText("실전서버");
-        }
-        else {
-            serverType = "실전서버";
-            btnTradeServer.setText("모의서버");
-        }
+
+        if (sharedPreferences.getString("trade_mode", "test").equals("test"))
+            btnTradeTypeChange.setText("실전투자");
+        else
+            btnTradeTypeChange.setText("모의투자");
 
 
         btnAddStrategy.setOnClickListener(new View.OnClickListener() {
@@ -146,27 +210,38 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject newStrategy = new JSONObject();
 
                     newStrategy.put("strategy_name", "새로운 전략");
-                    newStrategy.put("runnig_status", "false");
-                    newStrategy.put("sCode", "");
+                    newStrategy.put("running_status", "false");
                     newStrategy.put("is_simulation", "false");
-                    newStrategy.put("trade_account", "");
+                    newStrategy.put("trade_account", spnAccount.getSelectedItem().toString());
                     newStrategy.put("max_loss", "");
                     newStrategy.put("max_profit", "");
-                    newStrategy.put("start_hour", "");
-                    newStrategy.put("start_min", "");
-                    newStrategy.put("end_hour", "");
-                    newStrategy.put("end_min", "");
+                    newStrategy.put("trade_time", new JSONArray());
+                    newStrategy.put("quant", new JSONArray());
                     newStrategy.put("enter_buy", new JSONArray());
                     newStrategy.put("enter_sell", new JSONArray());
                     newStrategy.put("clear_buy", new JSONArray());
                     newStrategy.put("clear_sell", new JSONArray());
+                    newStrategy.put("ai_clear", new JSONArray());
 
                     JSONObject jsonObject = new JSONObject(sharedPreferences.getString("strategy_json", null));
 
                     jsonObject.getJSONArray("strategy_list").put(newStrategy);
 
-                    editor.putString("strategy_json", jsonObject.toString());
-                    editor.commit();
+                    jsonObject.put("command", "json_update_require_from_android");
+                    AWSMQTTClient.publish(jsonObject.toString());
+
+                    try {
+                        Thread.sleep(1000);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+                    JSONObject temp = new JSONObject();
+                    temp.put("command", "add_strategy_from_android");
+
+                    AWSMQTTClient.publish(temp.toString());
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -177,34 +252,97 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        btnTradeServer.setOnClickListener(new View.OnClickListener() {
+        btnProfitHide.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 try {
-                    if (sharedPreferences.getString("trade_server", "test").equals("test"))
-                        editor.putString("trade_server", "real");
+                    if (sharedPreferences.getBoolean("profit_hidden", false)) {
+                        btnProfitHide.setText("숨기기");
+                        llProfit.setVisibility(View.VISIBLE);
+                        editor.putBoolean("profit_hidden", false);
+                    }
                     else
-                        editor.putString("trade_server", "test");
+                    {
+                        btnProfitHide.setText("보이기");
+                        llProfit.setVisibility(View.GONE);
+                        editor.putBoolean("profit_hidden", true);
+                    }
+
+                    editor.commit();
+
+                } catch (Exception e) {
+                    Log.e(LOG_TAG, "btnProfitHide error", e);
+                }
+            }
+        });
+
+
+        btnTradeTypeChange.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                try {
+                    runningStateFlag = false;
+                    AWSMQTTClient.disconnect();
+
+                    if (sharedPreferences.getString("trade_mode", "test").equals("test"))
+                        editor.putString("trade_mode", "real");
+
+                    else
+                        editor.putString("trade_mode", "test");
 
                     editor.commit();
                     finish();
                     startActivity(getIntent());
 
                 } catch (Exception e) {
-                    Log.e(LOG_TAG, "Trade Server swap error.", e);
+                    Log.e(LOG_TAG, "Account change error", e);
                 }
             }
         });
 
-        btnAccChange.setOnClickListener(new View.OnClickListener() {
+        btnScodeChange.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 try {
-
-                    Intent intent = new Intent(getApplicationContext(), KiwoomIDSettingActivity.class);
+                    runningStateFlag = false;
+                    AWSMQTTClient.disconnect();
+                    Intent intent = new Intent(getApplicationContext(), KiwoomIDAndScodeSettingActivity.class);
+                    intent.putExtra("type", "sCode");
                     startActivity(intent);
 
                 } catch (Exception e) {
                     Log.e(LOG_TAG, "Account change error", e);
+                }
+            }
+        });
+
+
+
+        btnAccChange.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                try {
+                    runningStateFlag = false;
+                    AWSMQTTClient.disconnect();
+                    Intent intent = new Intent(getApplicationContext(), KiwoomIDAndScodeSettingActivity.class);
+                    intent.putExtra("type", "kiwoom_id");
+                    startActivity(intent);
+
+                } catch (Exception e) {
+                    Log.e(LOG_TAG, "Account change error", e);
+                }
+            }
+        });
+
+        btnGetProfit.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                try {
+                    String selectedAcc = spnAccount.getSelectedItem().toString();
+
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("command", "get_profit_from_android");
+                    jsonObject.put("acc_num", selectedAcc);
+                    jsonObject.put("time", tvDateInput.getText().toString().replaceAll("-",""));
+
+                    AWSMQTTClient.publish(jsonObject.toString());
+                } catch (Exception e) {
+                    Log.e(LOG_TAG, e.toString());
                 }
             }
         });
@@ -249,9 +387,34 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        setTitle("ID : " + sharedPreferences.getString("kiwoom_id", null) + " - " + serverType);
+        if (trade_mode.equals("test"))
+            setTitle("ID : " + sharedPreferences.getString("kiwoom_id", null) + "   종목코드 : " + sharedPreferences.getString("sCode", null) + " - 모의");
+        else
+            setTitle("ID : " + sharedPreferences.getString("kiwoom_id", null) + "   종목코드 : " + sharedPreferences.getString("sCode", null) + " - 실전");
+
+        strategyNameList = new ArrayList<String>();
+
+        adapter = new MainCustomAdapter(MainActivity.this, R.layout.activity_main_strategy_row_item, strategyNameList);
+        list.setAdapter(adapter);
+
 
         AWSMQTTClient = new AWSMQTT(getApplicationContext());
+
+        autoTraderConnectionCheck();
+
+        tvMsgServerStatus.setText("연결 끊김");
+        tvAutoTraderStatus.setText("연결 끊김");
+        setUIForStop();
+
+
+        try {
+
+            AWSMQTTClient.disconnect();
+            AWSMQTTClient.connect();
+
+        } catch (Exception e) {
+            Log.e("AWSMQTTClient reconnect error", e.toString());
+        }
 
 
     }
@@ -259,15 +422,16 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("LongLogTag")
     public void onResume() {
         MainActivity.super.onResume();
+        if(AWSMQTTClient.isConnected())
+            AWSMQTTClient.requestJsonState();
+    }
 
-        tvMsgServerStatus.setText("연결 끊김");
-        tvAutoTraderStatus.setText("연결 끊김");
-        setUIForStop();
 
-        strategyNameList = new ArrayList<String>();
 
+    public static void setStrategyList(JSONObject jsonObject)
+    {
+        strategyNameList.removeAll(strategyNameList);
         try {
-            JSONObject jsonObject = new JSONObject(sharedPreferences.getString("strategy_json", null));
             JSONArray jsonArray = jsonObject.getJSONArray("strategy_list");
 
             for(int i = 0; i < jsonArray.length(); i++)
@@ -278,37 +442,38 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        adapter = new MainCustomAdapter(MainActivity.this,R.layout.activity_main_strategy_row_item, strategyNameList);
-        list.setAdapter(adapter);
-
-        try {
-
-            AWSMQTTClient.disconnect();
-            AWSMQTTClient.connect();
-            autoTraderConnectionCheck();
-
-
-        } catch (Exception e) {
-            Log.e("AWSMQTTClient reconnect error", e.toString());
-        }
-
+        adapter.notifyDataSetChanged();
 
     }
 
     private void autoTraderConnectionCheck() {
-        offCount = 0;
+        autoTraderOffCount = 10;
+        runningStateFlag = true;
+
 
         new Thread() {
             public void run() {
                 while (true) {
-                    if (offCount >= 5) {
-                        //tvAutoTraderStatus.setText("연결 끊김");
-                        handler.sendMessage(handler.obtainMessage());
+                    if (!runningStateFlag)
+                        return;
+
+                    if (autoTraderOffCount >= 4) {
+                        handlerForStop.sendMessage(handlerForStop.obtainMessage());
                     }
-                    offCount++;
+                    else
+                    {
+                        handlerForRunning.sendMessage(handlerForRunning.obtainMessage());
+                    }
+                    autoTraderOffCount++;
                     try {
                         Thread.sleep(1000);
-                    } catch (InterruptedException e) {
+                        if (AWSMQTTClient.isConnected()) {
+                            JSONObject jsonObject = new JSONObject();
+
+                            jsonObject.put("command", "length_require_from_android");
+                            AWSMQTTClient.publish(jsonObject.toString());
+                        }
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -316,36 +481,75 @@ public class MainActivity extends AppCompatActivity {
         }.start();
     }
     private static void setUIForRunning() {
-        isUIDisabled = false;
         btnSelectDate.setEnabled(true);
+        btnAddStrategy.setEnabled(true);
         spnAccount.setEnabled(true);
         btnGetProfit.setEnabled(true);
+        list.setVisibility(View.VISIBLE);
     }
 
-    private void setUIForStop() {
-        isUIDisabled = true;
+    private static void setUIForStop() {
         btnSelectDate.setEnabled(false);
+        btnAddStrategy.setEnabled(false);
         spnAccount.setEnabled(false);
         btnGetProfit.setEnabled(false);
+        list.setVisibility(View.INVISIBLE);
     }
 
+    public static void setAcc(JSONArray jsonArr) {
+        accountList = new ArrayList<String>();
+        if (jsonArr != null) {
+            int len = jsonArr.length();
+            for (int i=0;i<len;i++){
+                try {
+                    accountList.add(jsonArr.get(i).toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(spnAccount.getContext(), android.R.layout.simple_spinner_item, accountList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnAccount.setAdapter(adapter);
+
+    }
+
+
+    public static void setProfit(JSONObject jsonObject) {
+        try {
+            etTradeProfit.setText(jsonObject.getString("trade_profit"));
+            etFee.setText(jsonObject.getString("fee"));
+            etTotalProfit.setText(jsonObject.getString("total_profit"));
+
+            Toast toast = Toast.makeText(etTradeProfit.getContext(),"조회 완료!", Toast.LENGTH_SHORT);
+            toast.show();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void setLengthInfo(JSONObject jsonObject) {
+        try {
+            etQueueLen.setText(jsonObject.getString("queue_length"));
+            etIndicatorLen.setText(jsonObject.getString("calc_indicators_length"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
     public static void setMqttServerStatus(String status)
     {
         tvMsgServerStatus.setText(status);
     }
     public static void resetTraderStatusCount()
     {
-        offCount = 0;
-        tvAutoTraderStatus.setText("연결됨");
-
-        if (isUIDisabled)
-        {
-            setUIForRunning();
-        }
+            autoTraderOffCount = 0;
     }
 
 
-    public static void strategySetting(int position)
+    public static void strategySetting(int position, boolean isRunning)
     {
         Dialog settingDialog = new Dialog(btnAccChange.getContext());
         settingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -360,6 +564,7 @@ public class MainActivity extends AppCompatActivity {
                 settingDialog.dismiss();
                 Intent intent = new Intent(mContext, GeneralSettingActivity.class);
                 intent.putExtra("position", position);
+                intent.putExtra("is_running", isRunning);
                 intent.putExtra("strategy_name", strategyNameList.get(position));
                 mContext.startActivity(intent);
             }
@@ -372,6 +577,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(mContext, IndicatorSettingActivity.class);
                 intent.putExtra("type", "enter_buy");
                 intent.putExtra("position", position);
+                intent.putExtra("is_running", isRunning);
                 intent.putExtra("strategy_name", strategyNameList.get(position));
                 mContext.startActivity(intent);
             }
@@ -383,6 +589,8 @@ public class MainActivity extends AppCompatActivity {
                 settingDialog.dismiss();
                 Intent intent = new Intent(mContext, IndicatorSettingActivity.class);
                 intent.putExtra("type", "enter_sell");
+                intent.putExtra("position", position);
+                intent.putExtra("is_running", isRunning);
                 intent.putExtra("strategy_name", strategyNameList.get(position));
                 mContext.startActivity(intent);
             }
@@ -394,6 +602,8 @@ public class MainActivity extends AppCompatActivity {
                 settingDialog.dismiss();
                 Intent intent = new Intent(mContext, IndicatorSettingActivity.class);
                 intent.putExtra("type", "clear_buy");
+                intent.putExtra("position", position);
+                intent.putExtra("is_running", isRunning);
                 intent.putExtra("strategy_name", strategyNameList.get(position));
                 mContext.startActivity(intent);
             }
@@ -405,51 +615,266 @@ public class MainActivity extends AppCompatActivity {
                 settingDialog.dismiss();
                 Intent intent = new Intent(mContext, IndicatorSettingActivity.class);
                 intent.putExtra("type", "clear_sell");
+                intent.putExtra("position", position);
+                intent.putExtra("is_running", isRunning);
                 intent.putExtra("strategy_name", strategyNameList.get(position));
                 mContext.startActivity(intent);
             }
         });
 
+        settingDialog.findViewById(R.id.llAIClearSetting).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                settingDialog.dismiss();
+                Intent intent = new Intent(mContext, IndicatorSettingActivity.class);
+                intent.putExtra("type", "ai_clear");
+                intent.putExtra("position", position);
+                intent.putExtra("is_running", isRunning);
+                intent.putExtra("strategy_name", strategyNameList.get(position));
+                mContext.startActivity(intent);
+            }
+        });
+
+    }
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    private void onAppBackground() {
+        Log.d(LOG_TAG, "App in background");
+        runningStateFlag = false;
+        AWSMQTTClient.disconnect();
+
+        finishAndRemoveTask();
+    }
+
+    public static void strategyStopRun(int position)
+    {
+        JSONObject jsonObject = null;
+        Log.e("debug - 1", String.valueOf(position));
+        try {
+            jsonObject = new JSONObject(sharedPreferences.getString("strategy_json", null));
+            Log.e("debug - 2", String.valueOf(position));
+            JSONObject finalJsonObject = jsonObject;
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    switch (which) {
+                        case DialogInterface.BUTTON_POSITIVE:
+                            try {
+                                if (finalJsonObject.getJSONArray("strategy_list").getJSONObject(position).getString("running_status").equals("false"))
+                                {
+                                    if (finalJsonObject.getJSONArray("strategy_list").getJSONObject(position).getString("strategy_name").equals("") ||
+                                            finalJsonObject.getJSONArray("strategy_list").getJSONObject(position).getString("max_loss").equals("") ||
+                                            finalJsonObject.getJSONArray("strategy_list").getJSONObject(position).getString("max_profit").equals("") ||
+                                            finalJsonObject.getJSONArray("strategy_list").getJSONObject(position).getJSONArray("enter_buy").length() == 0 ||
+                                            finalJsonObject.getJSONArray("strategy_list").getJSONObject(position).getJSONArray("enter_sell").length() == 0 ||
+                                            (finalJsonObject.getJSONArray("strategy_list").getJSONObject(position).getJSONArray("ai_clear").length() == 0 &&
+                                            (finalJsonObject.getJSONArray("strategy_list").getJSONObject(position).getJSONArray("clear_buy").length() == 0 ||
+                                             finalJsonObject.getJSONArray("strategy_list").getJSONObject(position).getJSONArray("clear_sell").length() == 0)))
+                                    {
+                                        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+
+                                                switch (which) {
+                                                    case DialogInterface.BUTTON_POSITIVE:
+
+                                                        break;
+
+                                                }
+                                            }
+                                        };
+
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                                        builder.setMessage("모든 값을 입력후 시작해주세요!").setPositiveButton("확인", dialogClickListener).show();
+                                    } else{
+                                        int numOfVirtualTrade = 0;
+
+                                        boolean containOthersEnterBuy = false;
+                                        for(int i = 0; i < finalJsonObject.getJSONArray("strategy_list").getJSONObject(position).getJSONArray("enter_buy").length(); i++)
+                                        {
+                                            if (!finalJsonObject.getJSONArray("strategy_list").getJSONObject(position).getJSONArray("enter_buy").getJSONObject(i).getString("name").contains("가상매매")) {
+                                                containOthersEnterBuy = true;
+
+                                            }
+                                            else
+                                                numOfVirtualTrade ++;
+
+                                        }
+
+                                        boolean containOthersEnterSell = false;
+                                        for(int i = 0; i < finalJsonObject.getJSONArray("strategy_list").getJSONObject(position).getJSONArray("enter_sell").length(); i++)
+                                        {
+                                            if (!finalJsonObject.getJSONArray("strategy_list").getJSONObject(position).getJSONArray("enter_sell").getJSONObject(i).getString("name").contains("가상매매")) {
+                                                containOthersEnterSell = true;
+
+                                            }
+                                            else
+                                                numOfVirtualTrade ++;
+                                        }
+
+                                        if (numOfVirtualTrade > 1)
+                                        {
+                                            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                    switch (which) {
+                                                        case DialogInterface.BUTTON_POSITIVE:
+
+                                                            break;
+
+                                                    }
+                                                }
+                                            };
+
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                                            builder.setMessage("가상매매 지표는 하나만 사용해주세요!").setPositiveButton("확인", dialogClickListener).show();
+                                        }
+
+                                        else if (containOthersEnterBuy && containOthersEnterSell)
+                                        {
+                                            finalJsonObject.getJSONArray("strategy_list").getJSONObject(position).put("running_status", "true");
+                                            finalJsonObject.put("command", "json_update_require_from_android");
+                                            AWSMQTTClient.publish(finalJsonObject.toString());
+                                        }
+
+                                        else
+                                        {
+                                            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                    switch (which) {
+                                                        case DialogInterface.BUTTON_POSITIVE:
+
+                                                            break;
+
+                                                    }
+                                                }
+                                            };
+
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                                            builder.setMessage("가상매매 지표외 다른 지표를 추가해주세요!").setPositiveButton("확인", dialogClickListener).show();
+                                        }
+                                    }
 
 
 
-//        /* 이 함수 안에 원하는 디자인과 기능을 구현하면 된다. */
-//
-//        // 위젯 연결 방식은 각자 취향대로~
-//        // '아래 아니오 버튼'처럼 일반적인 방법대로 연결하면 재사용에 용이하고,
-//        // '아래 네 버튼'처럼 바로 연결하면 일회성으로 사용하기 편함.
-//        // *주의할 점: findViewById()를 쓸 때는 -> 앞에 반드시 다이얼로그 이름을 붙여야 한다.
-//
-//        // 아니오 버튼
-//        Button noBtn = settingDialog.findViewById(R.id.noBtn);
-//        noBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                getB
-//                // 원하는 기능 구현
-//                dilaog01.dismiss(); // 다이얼로그 닫기
-//            }
-//        });
-//        // 네 버튼
-//        dilaog01.findViewById(R.id.yesBtn).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // 원하는 기능 구현
-//                finish();           // 앱 종료
-//            }
-//        });
+                                } else {
+                                    finalJsonObject.getJSONArray("strategy_list").getJSONObject(position).put("running_status", "false");
+                                    finalJsonObject.put("command", "json_update_require_from_android");
+                                    AWSMQTTClient.publish(finalJsonObject.toString());
+                                }
 
 
+                                Log.d(LOG_TAG, sharedPreferences.getString("strategy_json", null));
+
+                                try {
+                                    Thread.sleep(500);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                                adapter.notifyDataSetChanged();
+
+                                break;
+                            } catch (Exception e)
+                            {
+
+                            }
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //No button clicked
+                                break;
+                    }
+                }
+            };
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            String dialogMessage = "";
+            if (jsonObject.getJSONArray("strategy_list").getJSONObject(position).getString("running_status").equals("false"))
+            {
+                dialogMessage = " 전략을 시작하시겠습니까?";
+            }
+            else
+            {
+                dialogMessage = " 전략을 중지하시겠습니까?";
+            }
+            builder.setMessage(strategyNameList.get(position) + dialogMessage).setPositiveButton("예", dialogClickListener)
+                    .setNegativeButton("취소", dialogClickListener).show();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
     }
 
-    public static void strategyRemove(int position)
+    public static void strategyClear(int position)
     {
-        // this line adds the data of your EditText and puts in your array
-        strategyNameList.remove(position);
-        // next thing you have to do is check if your adapter has changed
-        adapter.notifyDataSetChanged();
+        try {
+            JSONObject jsonObject = new JSONObject();
+
+            jsonObject.put("command", "clear_position_require_from_android");
+            jsonObject.put("position", String.valueOf(position));
+
+            AWSMQTTClient.publish(jsonObject.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void strategyRemove(JSONObject result)
+    {
+        try {
+            if (result.getInt("result") == 0)
+            {
+                JSONObject jsonObject = new JSONObject(sharedPreferences.getString("strategy_json", null));
+                jsonObject.getJSONArray("strategy_list").remove(result.getInt("position"));
+
+                jsonObject.put("command", "json_update_require_from_android");
+
+                AWSMQTTClient.publish(jsonObject.toString());
+
+                Toast.makeText(MainActivity.mContext,"삭제완료!", Toast.LENGTH_SHORT).show();
+
+                // this line adds the data of your EditText and puts in your array
+                strategyNameList.remove(result.getInt("position"));
+                // next thing you have to do is check if your adapter has changed
+                adapter.notifyDataSetChanged();
+            }
+            else
+            {
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                break;
+                        }
+                    }
+                };
+                AlertDialog.Builder builder = new AlertDialog.Builder(spnAccount.getContext());
+                builder.setMessage("해당 전략은 포지션을 보유중 입니다.\n청산 후 삭제해주세요.").setPositiveButton("확인", dialogClickListener).show();
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static ArrayList<String> getAccountList()
+    {
+        return accountList;
+    }
+
+    public static boolean getClientAndServerConnectionStatus()
+    {
+        return isClientAndServerConnected;
+    }
+
+    public static void publishMsg(String msg) {
+        AWSMQTTClient.publish(msg);
     }
 
     public void onBackPressed() {

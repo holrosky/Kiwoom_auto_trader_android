@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    app:cardCornerRadius="20dp"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="15dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="누적 수익 틱 : "
+                    android:textSize="15sp" />
+
+
+                <EditText
+                    android:id="@+id/etProfitFrom"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edittext_rounded_corner_rectangle"
+                    android:gravity="center"
+                    android:inputType="number|numberSigned"
+                    android:padding="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text=" ~ "
+                    android:textSize="15sp" />
+
+
+                <EditText
+                    android:id="@+id/etProfitTo"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edittext_rounded_corner_rectangle"
+                    android:gravity="center"
+                    android:inputType="number|numberSigned"
+                    android:padding="10dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="개수 : "
+                    android:textSize="15sp" />
+
+
+                <EditText
+                    android:id="@+id/etQuant"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edittext_rounded_corner_rectangle"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:padding="10dp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="77dp"
+            android:layout_height="48dp"
+            android:text="삭제"
+            android:layout_marginRight="5dp"
+            android:textSize="10sp" />
+
+
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

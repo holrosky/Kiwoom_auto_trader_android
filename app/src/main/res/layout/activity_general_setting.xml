@@ -5,10 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,8 +42,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="전략 이름 : "
                     android:gravity="center"
+                    android:text="전략 이름 : "
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
                     app:layout_constraintTop_toTopOf="@+id/guidelineTop" />
@@ -64,29 +60,6 @@
                     app:layout_constraintTop_toTopOf="@+id/guidelineTop" />
 
                 <TextView
-                    android:id="@+id/tvCode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="종목 코드 : "
-                    android:gravity="center"
-                    android:textSize="15sp"
-                    app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
-                    app:layout_constraintTop_toBottomOf="@+id/etStrategyName"/>
-
-                <EditText
-                    android:id="@+id/etCode"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/edittext_rounded_corner_rectangle"
-                    android:padding="10dp"
-                    app:layout_constraintStart_toEndOf="@+id/tvCode"
-                    app:layout_constraintTop_toBottomOf="@+id/etStrategyName"/>
-
-
-                <TextView
                     android:id="@+id/tvAutoTrader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -94,16 +67,16 @@
                     android:text="매매 계좌 :"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
-                    app:layout_constraintTop_toBottomOf="@+id/etCode" />
+                    app:layout_constraintTop_toBottomOf="@+id/etStrategyName" />
 
                 <Spinner
                     android:id="@+id/spnAccount"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="14dp"
+                    android:layout_marginTop="24dp"
                     app:layout_constraintStart_toEndOf="@+id/tvAutoTrader"
-                    app:layout_constraintTop_toBottomOf="@+id/etCode" />
+                    app:layout_constraintTop_toBottomOf="@+id/etStrategyName" />
 
                 <CheckBox
                     android:id="@+id/cbSimulation"
@@ -152,7 +125,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="28dp"
-                    android:text="최대 손해 : "
+                    android:text="최대 손절 틱 : "
                     android:textSize="15sp"
                     app:layout_constraintEnd_toStartOf="@+id/etMaxLoss"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -178,7 +151,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="28dp"
-                    android:text="최대 이익 : "
+                    android:text="최대 익절 틱 : "
                     android:textSize="15sp"
                     app:layout_constraintEnd_toStartOf="@+id/etMaxProfit"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -203,121 +176,114 @@
                     android:id="@+id/tvTradeTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="32dp"
                     android:text="매매 시간 설정"
                     android:textSize="15sp"
-                    app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
+                    app:layout_constraintEnd_toStartOf="@+id/btnHideTime"
+                    app:layout_constraintHorizontal_bias="0.498"
                     app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
                     app:layout_constraintTop_toBottomOf="@+id/etMaxProfit" />
 
-                <TextView
-                    android:id="@+id/tvStartHour"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="28dp"
-                    android:text="시작 : "
-                    android:textSize="15sp"
-                    app:layout_constraintEnd_toStartOf="@+id/etStartHour"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/guidelineLeft"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvTradeTime" />
-
-                <EditText
-                    android:id="@+id/etStartHour"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
+                <Button
+                    android:id="@+id/btnHideTime"
+                    android:layout_width="77dp"
+                    android:layout_height="48dp"
                     android:layout_marginTop="16dp"
-                    android:background="@drawable/edittext_rounded_corner_rectangle"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:padding="10dp"
-                    app:layout_constraintEnd_toStartOf="@+id/tvStartTimeDivider"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/tvStartHour"
-                    app:layout_constraintTop_toBottomOf="@+id/tvTradeTime" />
+                    android:layout_marginEnd="8dp"
+                    android:text="숨기기"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toStartOf="@+id/btnAddTime"
+                    app:layout_constraintTop_toBottomOf="@+id/etMaxProfit" />
 
-                <TextView
-                    android:id="@+id/tvStartTimeDivider"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    android:text=":"
-                    android:textSize="20sp"
-                    app:layout_constraintEnd_toStartOf="@+id/etStartMin"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/etStartHour"
-                    app:layout_constraintTop_toBottomOf="@+id/tvTradeTime" />
-
-                <EditText
-                    android:id="@+id/etStartMin"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
+                <Button
+                    android:id="@+id/btnAddTime"
+                    android:layout_width="77dp"
+                    android:layout_height="48dp"
                     android:layout_marginTop="16dp"
-                    android:background="@drawable/edittext_rounded_corner_rectangle"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:padding="10dp"
-                    app:layout_constraintEnd_toStartOf="@+id/tvEndHour"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/tvStartTimeDivider"
-                    app:layout_constraintTop_toBottomOf="@+id/tvTradeTime" />
-
-
-                <TextView
-                    android:id="@+id/tvEndHour"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="28dp"
-                    android:text="종료 : "
-                    android:textSize="15sp"
-                    app:layout_constraintEnd_toStartOf="@+id/etEndHour"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/etStartMin"
-                    app:layout_constraintTop_toBottomOf="@+id/tvTradeTime" />
-
-                <EditText
-                    android:id="@+id/etEndHour"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/edittext_rounded_corner_rectangle"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:padding="10dp"
-                    app:layout_constraintEnd_toStartOf="@+id/tvEndTimeDivider"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/tvEndHour"
-                    app:layout_constraintTop_toBottomOf="@+id/tvTradeTime" />
-
-                <TextView
-                    android:id="@+id/tvEndTimeDivider"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    android:text=":"
-                    android:textSize="20sp"
-                    app:layout_constraintEnd_toStartOf="@+id/etEndMin"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/etEndHour"
-                    app:layout_constraintTop_toBottomOf="@+id/tvTradeTime" />
-
-                <EditText
-                    android:id="@+id/etEndMin"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/edittext_rounded_corner_rectangle"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:padding="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/tvEndTimeDivider"
-                    app:layout_constraintTop_toBottomOf="@+id/tvTradeTime" />
+                    android:layout_marginEnd="8dp"
+                    android:text="추가"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
+                    app:layout_constraintTop_toBottomOf="@+id/etMaxProfit" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ListView
+                android:id="@+id/listTime"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@null"
+                android:scrollbars="none" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidelineTopSecond"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.02" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidelineLeftSecond"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.02" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidelineRightSecond"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.98" />
+
+                <TextView
+                    android:id="@+id/tvQuant"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="계약수 설정"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toStartOf="@+id/btnTemp"
+                    app:layout_constraintHorizontal_bias="0.498"
+                    app:layout_constraintStart_toStartOf="@+id/guidelineLeftSecond"
+                    app:layout_constraintTop_toBottomOf="@+id/guidelineTopSecond" />
+
+                <Button
+                    android:id="@+id/btnTemp"
+                    android:layout_width="77dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="숨기기"
+                    android:textSize="10sp"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toStartOf="@+id/btnAddQuant"
+                    app:layout_constraintTop_toBottomOf="@+id/guidelineTopSecond" />
+
+                <Button
+                    android:id="@+id/btnAddQuant"
+                    android:layout_width="77dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="추가"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toStartOf="@+id/guidelineRightSecond"
+                    app:layout_constraintTop_toBottomOf="@+id/guidelineTopSecond" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ListView
+                android:id="@+id/listQuant"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@null"
+                android:scrollbars="none" />
         </LinearLayout>
-    </ScrollView>
 </LinearLayout>

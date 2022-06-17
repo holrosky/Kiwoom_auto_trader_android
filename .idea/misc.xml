@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/drawable/edittext_rounded_corner_rectangle.xml" value="0.279" />
         <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/activity_Indicator_setting.xml" value="0.3328804347826087" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/activity_account_sCode_setting.xml" value="0.34427083333333336" />
         <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/activity_account_setting.xml" value="0.33061594202898553" />
         <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/activity_enter_setting.xml" value="0.36141304347826086" />
         <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/activity_enter_strategy_a.xml" value="0.24365942028985507" />
@@ -22,12 +23,36 @@
         <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/activity_enter_strategy_one.xml" value="0.37817028985507245" />
         <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/activity_enter_strategy_row_item.xml" value="0.36141304347826086" />
         <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/activity_general_setting.xml" value="0.5" />
-        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/activity_indicator_setting.xml" value="0.34427083333333336" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/activity_main.xml" value="0.5" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/activity_main_strategy_row_item.xml" value="0.3463541666666667" />
         <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/custom_listview_item_layout.xml" value="0.36141304347826086" />
         <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/enter_add_dialog.xml" value="0.36141304347826086" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/indicator_a.xml" value="0.3463541666666667" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/indicator_b.xml" value="0.3463541666666667" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/indicator_c.xml" value="0.34427083333333336" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/indicator_d.xml" value="0.34427083333333336" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/indicator_e.xml" value="0.34427083333333336" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/indicator_f.xml" value="0.34427083333333336" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/indicator_g.xml" value="0.34427083333333336" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/indicator_h.xml" value="0.34322916666666664" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/indicator_i.xml" value="0.5" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/indicator_j.xml" value="0.3378623188405797" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/indicator_k.xml" value="0.5" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/indicator_l.xml" value="0.3378623188405797" />
         <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/indicator_m.xml" value="0.3328804347826087" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/indicator_n.xml" value="0.40217391304347827" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/indicator_o.xml" value="0.34427083333333336" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/indicator_p.xml" value="0.34427083333333336" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/indicator_q.xml" value="0.34427083333333336" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/indicator_r.xml" value="0.34427083333333336" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/indicator_s.xml" value="0.34427083333333336" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/indicator_ㄱ.xml" value="0.34427083333333336" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/indicator_ㅜ.xml" value="0.34427083333333336" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/quant_row_item.xml" value="0.34427083333333336" />
         <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/row_item.xml" value="0.1" />
         <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/settting_dialog.xml" value="0.5" />
+        <entry key="..\:/Users/Taehee/Desktop/Kiwoom_auto_trader_android/app/src/main/res/layout/time_row_item.xml" value="0.3463541666666667" />
         <entry key="..\:/Users/gift24/AndroidStudioProjects/KiwoomAutoTrader/app/src/main/res/drawable/edittext_rounded_corner_rectangle.xml" value="0.358" />
         <entry key="..\:/Users/gift24/AndroidStudioProjects/KiwoomAutoTrader/app/src/main/res/layout/activity_ma.xml" value="0.5" />
         <entry key="..\:/Users/gift24/AndroidStudioProjects/KiwoomAutoTrader/app/src/main/res/layout/activity_mai.xml" value="0.43568840579710144" />

@@ -119,6 +119,7 @@
                 android:padding="10dp" />
         </LinearLayout>
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -130,23 +131,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="익절 : "
+                android:text="발동 틱수 "
                 android:textSize="20sp" />
 
             <EditText
-                android:id="@+id/etProfitTick"
+                android:id="@+id/etConditionTick"
                 android:layout_width="60dp"
                 android:layout_height="30dp"
                 android:background="@drawable/edittext_rounded_corner_rectangle"
                 android:gravity="center"
                 android:layout_margin="5dp"
                 android:inputType="number"
-                android:textSize="20sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="틱"
                 android:textSize="20sp" />
 
         </LinearLayout>
@@ -162,11 +157,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="손절 : "
+                android:text="리턴값 : "
                 android:textSize="20sp" />
 
             <EditText
-                android:id="@+id/etLossTick"
+                android:id="@+id/etReturnTick"
                 android:layout_width="60dp"
                 android:layout_height="30dp"
                 android:background="@drawable/edittext_rounded_corner_rectangle"
@@ -175,11 +170,6 @@
                 android:inputType="number"
                 android:textSize="20sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="틱"
-                android:textSize="20sp" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -40,26 +40,6 @@
 
         </LinearLayout>
 
-        <RadioGroup
-            android:id="@+id/rgTimeType"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checkedButton="@id/default1"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/default1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="실시간"/>
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="직전봉"/>
-        </RadioGroup>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -93,6 +73,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="분봉" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="일봉" />
                 </RadioGroup>
 
                 <LinearLayout
@@ -243,6 +228,53 @@
                 android:background="@drawable/edittext_rounded_corner_rectangle"
                 android:gravity="center"
                 android:layout_margin="5dp"
+                android:inputType="number|numberSigned"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llTargetClearTick"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="목표 청산 틱범위 : "
+                android:textSize="20sp" />
+
+
+            <EditText
+                android:id="@+id/etTargetClearTickFrom"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:background="@drawable/edittext_rounded_corner_rectangle"
+                android:gravity="center"
+                android:layout_marginLeft="5dp"
+                android:inputType="number|numberSigned"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="~"
+                android:textSize="20sp" />
+
+
+            <EditText
+                android:id="@+id/etTargetClearTickTo"
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:background="@drawable/edittext_rounded_corner_rectangle"
+                android:gravity="center"
+                android:layout_marginLeft="5dp"
                 android:inputType="number|numberSigned"
                 android:textSize="20sp" />
 

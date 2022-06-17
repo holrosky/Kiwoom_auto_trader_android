@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".KiwoomIDSettingActivity"/>
+        <activity android:name=".KiwoomIDAndScodeSettingActivity"/>
         <activity android:name=".GeneralSettingActivity"/>
         <activity android:name=".IndicatorSettingActivity"/>
     </application>

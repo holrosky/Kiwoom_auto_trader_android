@@ -43,6 +43,149 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginBottom="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="시간 : "
+                android:textSize="20sp" />
+
+
+            <EditText
+                android:id="@+id/etStartHour"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittext_rounded_corner_rectangle"
+                android:gravity="center"
+                android:inputType="number"
+                android:padding="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text=" : "
+                android:textSize="15sp" />
+
+
+            <EditText
+                android:id="@+id/etStartMin"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittext_rounded_corner_rectangle"
+                android:gravity="center"
+                android:inputType="number"
+                android:padding="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text=" ~ "
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/etEndHour"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittext_rounded_corner_rectangle"
+                android:gravity="center"
+                android:inputType="number"
+                android:padding="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text=" : "
+                android:textSize="15sp" />
+
+
+            <EditText
+                android:id="@+id/etEndMin"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittext_rounded_corner_rectangle"
+                android:gravity="center"
+                android:inputType="number"
+                android:padding="10dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/etRerunProfitUnit"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/edittext_rounded_corner_rectangle"
+                    android:gravity="center"
+                    android:layout_margin="5dp"
+                    android:inputType="number"
+                    android:textSize="20sp" />
+
+                <RadioGroup
+                    android:id="@+id/rgRerunProfitType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkedButton="@id/default3"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/default3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="틱" />
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="회" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" 익절 후 가상매매 재실행 "
+                android:textSize="20sp" />
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/darker_gray"
+            android:orientation="horizontal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_marginBottom="10dp"
@@ -51,11 +194,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="손절틱수 : "
+                android:text="누적 손절 틱수 : "
                 android:textSize="20sp" />
 
             <EditText
-                android:id="@+id/etLossTickUnit"
+                android:id="@+id/etLossTotalTick"
                 android:layout_width="60dp"
                 android:layout_height="30dp"
                 android:background="@drawable/edittext_rounded_corner_rectangle"
@@ -77,11 +220,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="손절횟수 : "
+                android:text="통합 진입 횟수 : "
                 android:textSize="20sp" />
 
             <EditText
-                android:id="@+id/etLossTickTimes"
+                android:id="@+id/etTotalEnterTimes"
                 android:layout_width="60dp"
                 android:layout_height="30dp"
                 android:background="@drawable/edittext_rounded_corner_rectangle"
@@ -103,11 +246,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="매수진입횟수 : "
+                android:text="연속 손절 횟수 : "
                 android:textSize="20sp" />
 
             <EditText
-                android:id="@+id/etEnterBuyTimes"
+                android:id="@+id/etConsecutiveLossTimes"
                 android:layout_width="60dp"
                 android:layout_height="30dp"
                 android:background="@drawable/edittext_rounded_corner_rectangle"
@@ -129,16 +272,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="매도진입횟수 : "
+                android:text="연속 이익보존 횟수 : "
                 android:textSize="20sp" />
 
             <EditText
-                android:id="@+id/etEnterSellTimes"
+                android:id="@+id/etConsecutiveProfitPreserveTimes"
                 android:layout_width="60dp"
                 android:layout_height="30dp"
+                android:layout_margin="5dp"
                 android:background="@drawable/edittext_rounded_corner_rectangle"
                 android:gravity="center"
-                android:layout_margin="5dp"
                 android:inputType="number"
                 android:textSize="20sp" />
 
@@ -155,11 +298,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="이익보존횟수 : "
+                android:text="연속(손절+이익보존) 횟수 : "
                 android:textSize="20sp" />
 
             <EditText
-                android:id="@+id/etProfitPreserveTimes"
+                android:id="@+id/etConsecutiveLossAndProfitPreserveTimes"
                 android:layout_width="60dp"
                 android:layout_height="30dp"
                 android:background="@drawable/edittext_rounded_corner_rectangle"
