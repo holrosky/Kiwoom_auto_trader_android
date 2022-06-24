@@ -74,12 +74,12 @@
 
             <Button
                 android:id="@+id/btnAccChange"
-                android:layout_width="85dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="70dp"
                 android:layout_marginTop="8dp"
                 android:text="계정변경"
-                android:textSize="11sp"
+                android:textSize="15sp"
                 app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/btnTradeTypeChange"
@@ -87,12 +87,12 @@
 
             <Button
                 android:id="@+id/btnTradeTypeChange"
-                android:layout_width="85dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="70dp"
                 android:text="모의투자"
-                android:textSize="11sp"
+                android:textSize="15sp"
                 app:layout_constraintEnd_toStartOf="@+id/btnAccChange"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
@@ -100,11 +100,11 @@
 
             <Button
                 android:id="@+id/btnScodeChange"
-                android:layout_width="85dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="종목변경"
-                android:textSize="11sp"
+                android:textSize="15sp"
                 app:layout_constraintEnd_toStartOf="@+id/btnAccChange"
                 app:layout_constraintStart_toEndOf="@+id/btnTradeTypeChange"
                 app:layout_constraintTop_toBottomOf="@+id/tvAutoTrader" />
@@ -149,12 +149,12 @@
 
                     <Button
                         android:id="@+id/btnSelectDate"
-                        android:layout_width="85dp"
-                        android:layout_height="48dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="5dp"
                         android:text="날짜선택"
-                        android:textSize="11sp"
+                        android:textSize="15sp"
                         app:layout_constraintStart_toEndOf="@+id/tvDateInput"
                         app:layout_constraintTop_toBottomOf="@+id/tvProfit" />
                 </LinearLayout>
@@ -182,11 +182,11 @@
 
                     <Button
                         android:id="@+id/btnGetProfit"
-                        android:layout_width="77dp"
-                        android:layout_height="match_parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:text="조회"
-                        android:textSize="11sp" />
+                        android:textSize="15sp" />
 
                 </LinearLayout>
 
@@ -303,12 +303,12 @@
 
             <Button
                 android:id="@+id/btnProfitHide"
-                android:layout_width="77dp"
-                android:layout_height="48dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:layout_marginRight="30dp"
+                android:layout_marginRight="20dp"
                 android:text="숨기기"
-                android:textSize="11sp"
+                android:textSize="15sp"
                 app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
                 app:layout_constraintTop_toBottomOf="@+id/lineFirst" />
 
@@ -325,6 +325,88 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tvAllClear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="종합 수익 청산 설정"
+                app:layout_constraintEnd_toStartOf="@id/guidelineRight"
+                app:layout_constraintStart_toEndOf="@id/guidelineLeft"
+                app:layout_constraintTop_toBottomOf="@+id/lineSecond" />
+
+            <Button
+                android:id="@+id/btnAllClearStopRun"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:text="시작"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="@id/guidelineRight"
+                app:layout_constraintTop_toBottomOf="@+id/lineSecond" />
+
+            <TextView
+                android:id="@+id/tvAllClearLoss"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="목표 손절 틱 : "
+                app:layout_constraintEnd_toStartOf="@+id/etAllClearTargetLossTick"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@id/guidelineLeft"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnAllClearStopRun" />
+
+            <EditText
+                android:id="@+id/etAllClearTargetLossTick"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edittext_rounded_corner_rectangle"
+                android:gravity="center"
+                android:inputType="number"
+                android:padding="5dp"
+                app:layout_constraintEnd_toStartOf="@+id/tvAllClearProfit"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tvAllClearLoss"
+                app:layout_constraintTop_toBottomOf="@+id/btnAllClearStopRun" />
+
+            <TextView
+                android:id="@+id/tvAllClearProfit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="목표 익절 틱 : "
+                app:layout_constraintEnd_toStartOf="@+id/etAllClearTargetProfitTick"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/etAllClearTargetLossTick"
+                app:layout_constraintTop_toBottomOf="@+id/btnAllClearStopRun" />
+
+            <EditText
+                android:id="@+id/etAllClearTargetProfitTick"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edittext_rounded_corner_rectangle"
+                android:gravity="center"
+                android:inputType="number"
+                android:padding="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/tvAllClearProfit"
+                app:layout_constraintTop_toBottomOf="@+id/btnAllClearStopRun" />
+
+            <LinearLayout
+                android:id="@+id/lineThird"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="@android:color/darker_gray"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
+                app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+                app:layout_constraintTop_toBottomOf="@+id/etAllClearTargetProfitTick" />
+
             <EditText
                 android:id="@+id/etQueueLen"
                 android:layout_width="70dp"
@@ -336,7 +418,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/etIndicatorLen"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@id/guidelineLeft"
-                app:layout_constraintTop_toBottomOf="@+id/lineSecond" />
+                app:layout_constraintTop_toBottomOf="@+id/tvStrategy" />
 
             <EditText
                 android:id="@+id/etIndicatorLen"
@@ -348,27 +430,37 @@
                 android:enabled="false"
                 android:padding="5dp"
                 app:layout_constraintStart_toEndOf="@+id/etQueueLen"
-                app:layout_constraintTop_toBottomOf="@+id/lineSecond" />
+                app:layout_constraintTop_toBottomOf="@+id/tvStrategy" />
 
             <TextView
                 android:id="@+id/tvStrategy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
+                android:layout_marginStart="45dp"
                 android:layout_marginTop="16dp"
                 android:text="전략 리스트"
                 app:layout_constraintStart_toEndOf="@+id/etIndicatorLen"
-                app:layout_constraintTop_toBottomOf="@+id/lineSecond" />
+                app:layout_constraintTop_toBottomOf="@+id/lineThird" />
+
+            <Button
+                android:id="@+id/btnAllClear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:text="일괄청산"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toStartOf="@id/btnAddStrategy"
+                app:layout_constraintTop_toBottomOf="@+id/tvStrategy" />
 
             <Button
                 android:id="@+id/btnAddStrategy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="30dp"
+                android:layout_marginEnd="20dp"
                 android:text="추가"
                 android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="@id/guidelineRight"
-                app:layout_constraintTop_toBottomOf="@+id/lineSecond" />
+                app:layout_constraintTop_toBottomOf="@+id/tvStrategy" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout

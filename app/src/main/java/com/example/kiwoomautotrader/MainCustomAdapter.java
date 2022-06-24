@@ -54,8 +54,8 @@ public class MainCustomAdapter extends ArrayAdapter {
             row = inflater.inflate(R.layout.activity_main_strategy_row_item, parent, false);
         tvStrategyName = (TextView) row.findViewById(R.id.tvStrategyName);
         btnStartStop = (Button) row.findViewById(R.id.btnStartStop);
-        btnDelete = (Button) row.findViewById(R.id.btnDelete);
-        btnClear = (Button) row.findViewById(R.id.btnClear);
+        //btnDelete = (Button) row.findViewById(R.id.btnDelete);
+        //btnClear = (Button) row.findViewById(R.id.btnClear);
         btnSetting = (Button) row.findViewById(R.id.btnSetting);
 
         tvStrategyName.setText(strategyName.get(position));
@@ -76,13 +76,13 @@ public class MainCustomAdapter extends ArrayAdapter {
         {
             btnStartStop.setText("중지");
             btnStartStop.setBackgroundColor(Color.RED);
-            btnDelete.setEnabled(false);
+            //btnDelete.setEnabled(false);
         }
         else
         {
             btnStartStop.setText("시작");
             btnStartStop.setBackgroundColor(Color.GREEN);
-            btnDelete.setEnabled(true);
+            //btnDelete.setEnabled(true);
         }
 
 
@@ -93,56 +93,49 @@ public class MainCustomAdapter extends ArrayAdapter {
             }
         });
 
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        switch (which){
-                            case DialogInterface.BUTTON_POSITIVE:
-                                Toast.makeText(MainActivity.mContext,"삭제중..", Toast.LENGTH_SHORT).show();
-                                JSONObject temp = new JSONObject();
-                                try {
-                                    temp.put("command", "remove_strategy_from_android");
-                                    temp.put("position", position);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-                                MainActivity.publishMsg(temp.toString());
-
-                                break;
-
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                //No button clicked
-                                break;
-                        }
-                    }
-                };
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage(strategyName.get(position) + " 전략을 삭제하시겠습니까?").setPositiveButton("삭제", dialogClickListener)
-                        .setNegativeButton("취소", dialogClickListener).show();
-            }
-        });
+//        btnDelete.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                        switch (which){
+//                            case DialogInterface.BUTTON_POSITIVE:
+//                                Toast.makeText(MainActivity.mContext,"삭제중..", Toast.LENGTH_SHORT).show();
+//                                JSONObject temp = new JSONObject();
+//                                try {
+//                                    temp.put("command", "remove_strategy_from_android");
+//                                    temp.put("position", position);
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//                                }
+//
+//                                MainActivity.publishMsg(temp.toString());
+//
+//                                break;
+//
+//                            case DialogInterface.BUTTON_NEGATIVE:
+//                                //No button clicked
+//                                break;
+//                        }
+//                    }
+//                };
+//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                builder.setMessage(strategyName.get(position) + " 전략을 삭제하시겠습니까?").setPositiveButton("삭제", dialogClickListener)
+//                        .setNegativeButton("취소", dialogClickListener).show();
+//            }
+//        });
 
 
         boolean finalIsRunning = isRunning;
         btnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.strategySetting(position, finalIsRunning);
+                MainActivity.strategySetting(position, finalIsRunning, strategyName.get(position));
             }
         });
 
-        btnClear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.mContext,"청산중...", Toast.LENGTH_SHORT).show();
-                MainActivity.strategyClear(position);
-            }
-        });
         return  row;
     }
 }

@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -63,11 +64,16 @@ public class MainActivity extends AppCompatActivity implements LifecycleObserver
     private static EditText etFee;
     private static EditText etTotalProfit;
 
+    private static Button btnAllClearStopRun;
+    private static EditText etAllClearTargetProfitTick;
+    private static EditText etAllClearTargetLossTick;
+
     private static EditText etQueueLen;
     private static EditText etIndicatorLen;
 
 
     private static TextView tvStrategy;
+    private static Button btnAllClear;
     private static Button btnAddStrategy;
     private static ListView list;
 
@@ -187,10 +193,15 @@ public class MainActivity extends AppCompatActivity implements LifecycleObserver
         etFee = (EditText) findViewById(R.id.etFee);
         etTotalProfit = (EditText) findViewById(R.id.etTotalProfit);
 
+        btnAllClearStopRun = (Button) findViewById(R.id.btnAllClearStopRun);
+        etAllClearTargetProfitTick = (EditText) findViewById(R.id.etAllClearTargetProfitTick);
+        etAllClearTargetLossTick = (EditText) findViewById(R.id.etAllClearTargetLossTick);
+
         etQueueLen = (EditText) findViewById(R.id.etQueueLen);
         etIndicatorLen = (EditText) findViewById(R.id.etIndicatorLen);
 
         tvStrategy = (TextView) findViewById(R.id.tvStrategy);
+        btnAllClear = (Button) findViewById(R.id.btnAllClear);
         btnAddStrategy = (Button) findViewById(R.id.btnAddStrategy);
         list = (ListView) findViewById(R.id.listTime);
 
@@ -269,6 +280,8 @@ public class MainActivity extends AppCompatActivity implements LifecycleObserver
 
                     editor.commit();
 
+                    adapter.notifyDataSetChanged();
+
                 } catch (Exception e) {
                     Log.e(LOG_TAG, "btnProfitHide error", e);
                 }
@@ -313,8 +326,6 @@ public class MainActivity extends AppCompatActivity implements LifecycleObserver
             }
         });
 
-
-
         btnAccChange.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 try {
@@ -344,6 +355,97 @@ public class MainActivity extends AppCompatActivity implements LifecycleObserver
                 } catch (Exception e) {
                     Log.e(LOG_TAG, e.toString());
                 }
+            }
+        });
+
+        btnAllClearStopRun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case DialogInterface.BUTTON_POSITIVE:
+
+                                JSONObject jsonObject = null;
+                                try {
+                                    jsonObject = new JSONObject(sharedPreferences.getString("strategy_json", null));
+                                    if (jsonObject.getJSONObject("profit_total_clear").getString("is_running").equals("true"))
+                                        jsonObject.getJSONObject("profit_total_clear").put("is_running", "false");
+                                    else
+                                        jsonObject.getJSONObject("profit_total_clear").put("is_running", "true");
+
+                                    jsonObject.getJSONObject("profit_total_clear").put("profit", etAllClearTargetProfitTick.getText());
+                                    jsonObject.getJSONObject("profit_total_clear").put("loss", etAllClearTargetLossTick.getText());
+
+                                    jsonObject.put("command", "json_update_require_from_android");
+                                    AWSMQTTClient.publish(jsonObject.toString());
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                                break;
+
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //No button clicked
+                                break;
+                        }
+                    }
+                };
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                String dialogMessage = "";
+                if (btnAllClearStopRun.getText().equals("중지"))
+                {
+                    dialogMessage = "종합 수익 청산을 중지하시겠습니까?";
+                }
+                else
+                {
+                    dialogMessage = "종합 수익 청산을 시작하시겠습니까?";
+                }
+                builder.setMessage(dialogMessage).setPositiveButton("예", dialogClickListener)
+                        .setNegativeButton("취소", dialogClickListener).show();
+
+            }
+        });
+
+        btnAllClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case DialogInterface.BUTTON_POSITIVE:
+
+                                JSONObject jsonObject = null;
+                                try {
+                                    Toast.makeText(MainActivity.mContext,"일괄 청산중...", Toast.LENGTH_SHORT).show();
+
+                                    jsonObject = new JSONObject();
+
+                                    jsonObject.put("command", "clear_all_position_from_android");
+
+                                    AWSMQTTClient.publish(jsonObject.toString());
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                                break;
+
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //No button clicked
+                                break;
+                        }
+                    }
+                };
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setMessage("모든 전략을 청산하시겠습니까?").setPositiveButton("예", dialogClickListener)
+                        .setNegativeButton("취소", dialogClickListener).show();
+
             }
         });
 
@@ -446,6 +548,32 @@ public class MainActivity extends AppCompatActivity implements LifecycleObserver
 
     }
 
+    public static void setAllClear(JSONObject jsonObject)
+    {
+        try {
+            if (jsonObject.getString("is_running").equals("true"))
+            {
+                btnAllClearStopRun.setText("중지");
+                btnAllClearStopRun.setBackgroundColor(Color.RED);
+                etAllClearTargetProfitTick.setEnabled(false);
+                etAllClearTargetLossTick.setEnabled(false);
+            }
+            else
+            {
+                btnAllClearStopRun.setText("시작");
+                btnAllClearStopRun.setBackgroundColor(Color.GREEN);
+                etAllClearTargetProfitTick.setEnabled(true);
+                etAllClearTargetLossTick.setEnabled(true);
+            }
+
+            etAllClearTargetProfitTick.setText(jsonObject.getString("profit"));
+            etAllClearTargetLossTick.setText(jsonObject.getString("loss"));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void autoTraderConnectionCheck() {
         autoTraderOffCount = 10;
         runningStateFlag = true;
@@ -485,6 +613,8 @@ public class MainActivity extends AppCompatActivity implements LifecycleObserver
         btnAddStrategy.setEnabled(true);
         spnAccount.setEnabled(true);
         btnGetProfit.setEnabled(true);
+        btnAllClearStopRun.setEnabled(true);
+        btnAllClear.setEnabled(true);
         list.setVisibility(View.VISIBLE);
     }
 
@@ -493,6 +623,10 @@ public class MainActivity extends AppCompatActivity implements LifecycleObserver
         btnAddStrategy.setEnabled(false);
         spnAccount.setEnabled(false);
         btnGetProfit.setEnabled(false);
+        btnAllClearStopRun.setEnabled(false);
+        etAllClearTargetProfitTick.setEnabled(false);
+        etAllClearTargetLossTick.setEnabled(false);
+        btnAllClear.setEnabled(false);
         list.setVisibility(View.INVISIBLE);
     }
 
@@ -549,7 +683,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleObserver
     }
 
 
-    public static void strategySetting(int position, boolean isRunning)
+    public static void strategySetting(int position, boolean isRunning, String strategyName)
     {
         Dialog settingDialog = new Dialog(btnAccChange.getContext());
         settingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -635,7 +769,114 @@ public class MainActivity extends AppCompatActivity implements LifecycleObserver
             }
         });
 
+        settingDialog.findViewById(R.id.llClear).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                settingDialog.dismiss();
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                strategyClear(position);
+
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //No button clicked
+                                break;
+                        }
+                    }
+                };
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setMessage(strategyName + " 전략을 청산하시겠습니까?").setPositiveButton("청산", dialogClickListener)
+                        .setNegativeButton("취소", dialogClickListener).show();
+
+            }
+        });
+
+        settingDialog.findViewById(R.id.llDelete).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                settingDialog.dismiss();
+
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                if (isRunning)
+                                    Toast.makeText(MainActivity.mContext,"전략을 중지 후 삭제해주세요!", Toast.LENGTH_SHORT).show();
+                                else {
+                                    Toast.makeText(MainActivity.mContext, "삭제중..", Toast.LENGTH_SHORT).show();
+                                    JSONObject temp = new JSONObject();
+                                    try {
+                                        temp.put("command", "remove_strategy_from_android");
+                                        temp.put("position", position);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    MainActivity.publishMsg(temp.toString());
+                                }
+
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //No button clicked
+                                break;
+                        }
+                    }
+                };
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setMessage(strategyName + " 전략을 삭제하시겠습니까?").setPositiveButton("삭제", dialogClickListener)
+                        .setNegativeButton("취소", dialogClickListener).show();
+            }
+        });
+
+        settingDialog.findViewById(R.id.llCopy).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                settingDialog.dismiss();
+
+                JSONObject jsonObject;
+                JSONObject copyObject;
+                try {
+                    jsonObject = new JSONObject(sharedPreferences.getString("strategy_json", null));
+                    copyObject = jsonObject.getJSONArray("strategy_list").getJSONObject(position);
+                    copyObject.put("running_status", "false");
+
+                    jsonObject = new JSONObject(sharedPreferences.getString("strategy_json", null));
+
+                    jsonObject.getJSONArray("strategy_list").put(copyObject);
+
+                    jsonObject.put("command", "json_update_require_from_android");
+                    AWSMQTTClient.publish(jsonObject.toString());
+
+                    try {
+                        Thread.sleep(1000);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+                    JSONObject temp = new JSONObject();
+                    temp.put("command", "add_strategy_from_android");
+
+                    AWSMQTTClient.publish(temp.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
     }
+
+
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     private void onAppBackground() {
         Log.d(LOG_TAG, "App in background");
@@ -648,10 +889,8 @@ public class MainActivity extends AppCompatActivity implements LifecycleObserver
     public static void strategyStopRun(int position)
     {
         JSONObject jsonObject = null;
-        Log.e("debug - 1", String.valueOf(position));
         try {
             jsonObject = new JSONObject(sharedPreferences.getString("strategy_json", null));
-            Log.e("debug - 2", String.valueOf(position));
             JSONObject finalJsonObject = jsonObject;
             DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                 @Override
@@ -810,6 +1049,8 @@ public class MainActivity extends AppCompatActivity implements LifecycleObserver
 
     public static void strategyClear(int position)
     {
+        Toast.makeText(MainActivity.mContext,"청산중...", Toast.LENGTH_SHORT).show();
+
         try {
             JSONObject jsonObject = new JSONObject();
 
@@ -821,6 +1062,29 @@ public class MainActivity extends AppCompatActivity implements LifecycleObserver
             e.printStackTrace();
         }
     }
+
+    public static void setClearAllResult(JSONObject result)
+    {
+        try {
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    switch (which){
+                        case DialogInterface.BUTTON_POSITIVE:
+                            break;
+                    }
+                }
+            };
+            AlertDialog.Builder builder = new AlertDialog.Builder(spnAccount.getContext());
+            builder.setMessage("청산한 전략 수 : " + String.valueOf(result.get("num_of_clear")) + '개').setPositiveButton("확인", dialogClickListener).show();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     public static void strategyRemove(JSONObject result)
     {

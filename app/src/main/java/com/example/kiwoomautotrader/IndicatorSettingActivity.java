@@ -48,6 +48,7 @@ public class IndicatorSettingActivity extends AppCompatActivity {
     private IndicatorCustomAdapter customAdapter;
 
     private JSONArray saveJson;
+    private int errorIndex;
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -142,7 +143,21 @@ public class IndicatorSettingActivity extends AppCompatActivity {
                         saveJson = new JSONArray();
                         for (int i = 0; i < IndicatorItemList.size(); i++) {
                             indicatorInfo = new ArrayList<>();
-                            checkEverythingFilled(IndicatorItemList.get(i).getLinearLayout());
+                            Log.d("^^^^^^^^^^^^^^^^^^^^^", String.valueOf(i));
+                            errorIndex = 0;
+
+                            try
+                            {
+                                checkEverythingFilled(IndicatorItemList.get(i).getLinearLayout());
+                            }
+                            catch (Exception e)
+                            {
+                                Toast myToast = Toast.makeText(btnSave.getContext(), "마지막 지표까지 스크롤 후 저장버튼을 눌러주세요!", Toast.LENGTH_SHORT);
+                                myToast.show();
+                                errorIndex = i;
+                                break;
+                            }
+
 
                             if (!isAllFilledUp)
                                 break;
@@ -152,21 +167,33 @@ public class IndicatorSettingActivity extends AppCompatActivity {
                         }
 
 
+
+
                         if (isAllFilledUp) {
-                            JSONObject jsonObject = new JSONObject(sharedPreferences.getString("strategy_json", null));
-                            JSONArray jsonArray = jsonObject.getJSONArray("strategy_list");
-                            JSONObject replaceJson = jsonArray.getJSONObject(strategyPosition);
+                            if(errorIndex == 0)
+                            {
+                                JSONObject jsonObject = new JSONObject(sharedPreferences.getString("strategy_json", null));
+                                JSONArray jsonArray = jsonObject.getJSONArray("strategy_list");
+                                JSONObject replaceJson = jsonArray.getJSONObject(strategyPosition);
 
-                            replaceJson.put(type, saveJson);
-                            jsonArray.put(strategyPosition, replaceJson);
-                            jsonObject.put("strategy_list", jsonArray);
+//                            if (errorIndex > 0)
+//                            {
+//                                for (int i = errorIndex; i < replaceJson.getJSONArray(type).length(); i++) {
+//                                    saveJson.put(replaceJson.getJSONArray(type).get(i));
+//                                }
+//                            }
 
-                            jsonObject.put("command", "json_update_require_from_android");
-                            MainActivity.publishMsg(jsonObject.toString());
+                                replaceJson.put(type, saveJson);
+                                jsonArray.put(strategyPosition, replaceJson);
+                                jsonObject.put("strategy_list", jsonArray);
 
-                            Toast myToast = Toast.makeText(btnSave.getContext(), "저장이 완료되었습니다!", Toast.LENGTH_SHORT);
-                            myToast.show();
-                            finish();
+                                jsonObject.put("command", "json_update_require_from_android");
+                                MainActivity.publishMsg(jsonObject.toString());
+
+                                Toast myToast = Toast.makeText(btnSave.getContext(), "저장이 완료되었습니다!", Toast.LENGTH_SHORT);
+                                myToast.show();
+                                finish();
+                            }
                         }
                         else
                         {
@@ -549,7 +576,7 @@ public class IndicatorSettingActivity extends AppCompatActivity {
 
                     if(indicatorInfo.get(0).equals("true"))
                         newIndicator.put("indicator_time_type", "tick");
-                    else if(indicatorInfo.get(2).equals("true"))
+                    else if(indicatorInfo.get(1).equals("true"))
                         newIndicator.put("indicator_time_type", "min");
                     else
                         newIndicator.put("indicator_time_type", "day");

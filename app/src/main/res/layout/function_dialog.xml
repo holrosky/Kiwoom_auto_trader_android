@@ -20,103 +20,6 @@
 
 
         <LinearLayout
-            android:id="@+id/llGeneralSetting"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="15dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="기본 설정" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llEnterBuySetting"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="15dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="매수 설정" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/llEnterSellSetting"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="15dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="매도 설정" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llClearBuySetting"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="15dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="매수 청산 설정" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llClearSellSetting"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="15dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="매도 청산 설정" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llAIClearSetting"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="15dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="AI 청산 설정" />
-
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/llClear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -127,7 +30,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="강제 청산"
+                android:text="청산"
                 android:textSize="20sp" />
 
         </LinearLayout>
@@ -164,7 +67,6 @@
                 android:textSize="20sp" />
 
         </LinearLayout>
-
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

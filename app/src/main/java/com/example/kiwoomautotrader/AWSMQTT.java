@@ -257,6 +257,7 @@ public class AWSMQTT {
                                         editor.commit();
 
                                         MainActivity.setStrategyList(messageJson);
+                                        MainActivity.setAllClear(messageJson.getJSONObject("profit_total_clear"));
 
                                         Log.d(LOG_TAG, messageJson.toString());
                                     }
@@ -273,9 +274,14 @@ public class AWSMQTT {
                                     else if (messageJson.getString("command").equals("profit_from_auto_trader"))
                                         MainActivity.setProfit(messageJson);
 
-                                    else if (messageJson.getString("command").equals("length_from_auto_trader"))
+                                    else if (messageJson.getString("command").equals("length_from_auto_trader")) {
                                         MainActivity.resetTraderStatusCount();
                                         MainActivity.setLengthInfo(messageJson);
+                                    }
+
+                                    else if (messageJson.getString("command").equals("clear_all_position_result_from_auto_trader")){
+                                        MainActivity.setClearAllResult(messageJson);
+                                    }
 
                                 }
 
