@@ -96,10 +96,10 @@ public class IndicatorSettingActivity extends AppCompatActivity {
 
         else if (type.equals("clear_buy") || type.equals("clear_sell"))
             IndicatorNameList = new ArrayList<>(Arrays.asList("스탑트레일링", "이익보존", "틱 청산", "기준선-배열/거리", "기준선-크로스", "기준선-직전봉", "기준선-현재가", "파라볼릭", "RSI"
-                    , "직전봉-현재가", "직전봉의 상태값", "현재봉의 상태값", "최근 n개봉", "가격지표", "MACD 크로스", "MACD / Osc 현재값", "MACD Osc 비교"));
+                    , "직전봉-현재가", "직전봉의 상태값", "현재봉의 상태값", "최근 n개봉", "가격지표", "MACD 크로스", "MACD / Osc 현재값", "MACD Osc 비교", "MACD Osc 연속 증감"));
         else
             IndicatorNameList = new ArrayList<>(Arrays.asList("기준선-배열/거리", "기준선-크로스", "기준선-직전봉", "기준선-현재가", "파라볼릭", "RSI"
-                    , "직전봉-현재가", "직전봉의 상태값", "현재봉의 상태값", "최근 n개봉", "가격지표",  "MACD 크로스", "MACD / Osc 현재값", "MACD Osc 비교", "가상매매지표 (먼저만족)", "가상매매지표 (박스권체크)"));
+                    , "직전봉-현재가", "직전봉의 상태값", "현재봉의 상태값", "최근 n개봉", "가격지표",  "MACD 크로스", "MACD / Osc 현재값", "MACD Osc 비교", "MACD Osc 연속 증감", "가상매매지표 (먼저만족)", "가상매매지표 (박스권체크)"));
 
         IndicatorItemList = new ArrayList<>();
 
@@ -724,6 +724,35 @@ public class IndicatorSettingActivity extends AppCompatActivity {
 
                     break;
                 //MACD 크로스", "MACD / Osc 현재값", "MACD Osc 비교"
+
+                case "MACD Osc 연속 증감":
+                    newIndicator.put("name", IndicatorItemList.get(i).getName());
+
+                    if(indicatorInfo.get(0).equals("true"))
+                        newIndicator.put("indicator_time_type", "tick");
+                    else if(indicatorInfo.get(1).equals("true"))
+                        newIndicator.put("indicator_time_type", "min");
+                    else
+                        newIndicator.put("indicator_time_type", "day");
+
+                    if (indicatorInfo.get(2).equals("true"))
+                        newIndicator.put("indicator_unit", "1");
+                    else
+                        newIndicator.put("indicator_unit", indicatorInfo.get(3));
+
+                    newIndicator.put("macd_short", indicatorInfo.get(4));
+                    newIndicator.put("macd_long", indicatorInfo.get(5));
+                    newIndicator.put("macd_signal", indicatorInfo.get(6));
+
+                    if(indicatorInfo.get(7).equals("true"))
+                        newIndicator.put("macd_change_type", "increase");
+                    else if(indicatorInfo.get(8).equals("true"))
+                        newIndicator.put("macd_change_type", "decrease");
+
+                    newIndicator.put("num_of_bar", indicatorInfo.get(9));
+                    newIndicator.put("target_clear_tick_from", indicatorInfo.get(10));
+                    newIndicator.put("target_clear_tick_to", indicatorInfo.get(11));
+                    break;
 
                 case "가격지표":
                     newIndicator.put("name", IndicatorItemList.get(i).getName());
