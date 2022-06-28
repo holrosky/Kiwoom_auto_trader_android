@@ -95,10 +95,10 @@ public class IndicatorSettingActivity extends AppCompatActivity {
             IndicatorNameList = new ArrayList<>(Arrays.asList("스탑트레일링", "이익보존", "틱 청산"));
 
         else if (type.equals("clear_buy") || type.equals("clear_sell"))
-            IndicatorNameList = new ArrayList<>(Arrays.asList("스탑트레일링", "이익보존", "틱 청산", "기준선-배열/거리", "기준선-크로스", "기준선-직전봉", "기준선-현재가", "파라볼릭", "RSI"
+            IndicatorNameList = new ArrayList<>(Arrays.asList("스탑트레일링", "이익보존", "틱 청산", "기준선-배열/거리", "기준선-크로스", "기준선-직전봉", "기준선-현재가", "Pivot-직전봉", "Pivot-현재가", "파라볼릭", "RSI"
                     , "직전봉-현재가", "직전봉의 상태값", "현재봉의 상태값", "최근 n개봉", "가격지표", "MACD 크로스", "MACD / Osc 현재값", "MACD Osc 비교", "MACD Osc 연속 증감"));
         else
-            IndicatorNameList = new ArrayList<>(Arrays.asList("기준선-배열/거리", "기준선-크로스", "기준선-직전봉", "기준선-현재가", "파라볼릭", "RSI"
+            IndicatorNameList = new ArrayList<>(Arrays.asList("기준선-배열/거리", "기준선-크로스", "기준선-직전봉", "기준선-현재가", "Pivot-직전봉", "Pivot-현재가", "파라볼릭", "RSI"
                     , "직전봉-현재가", "직전봉의 상태값", "현재봉의 상태값", "최근 n개봉", "가격지표",  "MACD 크로스", "MACD / Osc 현재값", "MACD Osc 비교", "MACD Osc 연속 증감", "가상매매지표 (먼저만족)", "가상매매지표 (박스권체크)"));
 
         IndicatorItemList = new ArrayList<>();
@@ -439,7 +439,6 @@ public class IndicatorSettingActivity extends AppCompatActivity {
                     newIndicator.put("target_clear_tick_to", indicatorInfo.get(14));
                     break;
                 case "기준선-현재가":
-
                     newIndicator.put("name", IndicatorItemList.get(i).getName());
                     if(indicatorInfo.get(0).equals("true"))
                         newIndicator.put("indicator_time_type", "tick");
@@ -462,6 +461,67 @@ public class IndicatorSettingActivity extends AppCompatActivity {
 
                     newIndicator.put("tick_diff_from", indicatorInfo.get(7));
                     newIndicator.put("tick_diff_to", indicatorInfo.get(8));
+                    break;
+                case "Pivot-직전봉":
+                    newIndicator.put("name", IndicatorItemList.get(i).getName());
+
+                    if(indicatorInfo.get(0).equals("true"))
+                        newIndicator.put("indicator_time_type", "tick");
+                    else if(indicatorInfo.get(1).equals("true"))
+                        newIndicator.put("indicator_time_type", "min");
+                    else
+                        newIndicator.put("indicator_time_type", "day");
+
+                    if (indicatorInfo.get(2).equals("true"))
+                        newIndicator.put("indicator_unit", "1");
+                    else
+                        newIndicator.put("indicator_unit", indicatorInfo.get(3));
+
+                    if(indicatorInfo.get(4).equals("true"))
+                        newIndicator.put("ohcl_type", "open");
+                    else if(indicatorInfo.get(5).equals("true"))
+                        newIndicator.put("ohcl_type", "high");
+                    else if(indicatorInfo.get(6).equals("true"))
+                        newIndicator.put("ohcl_type", "low");
+                    else if(indicatorInfo.get(7).equals("true"))
+                        newIndicator.put("ohcl_type", "close");
+
+                    if(indicatorInfo.get(8).equals("true"))
+                        newIndicator.put("pivot_type", "second_resistance");
+                    else if(indicatorInfo.get(9).equals("true"))
+                        newIndicator.put("pivot_type", "first_resistance");
+                    else if(indicatorInfo.get(10).equals("true"))
+                        newIndicator.put("pivot_type", "pivot_point");
+                    else if(indicatorInfo.get(11).equals("true"))
+                        newIndicator.put("pivot_type", "first_support");
+                    else if(indicatorInfo.get(12).equals("true"))
+                        newIndicator.put("pivot_type", "second_support");
+
+                    newIndicator.put("tick_diff_from", indicatorInfo.get(13));
+                    newIndicator.put("tick_diff_to", indicatorInfo.get(14));
+
+                    newIndicator.put("target_clear_tick_from", indicatorInfo.get(15));
+                    newIndicator.put("target_clear_tick_to", indicatorInfo.get(16));
+                    break;
+                case "Pivot-현재가":
+                    newIndicator.put("name", IndicatorItemList.get(i).getName());
+
+                    if(indicatorInfo.get(0).equals("true"))
+                        newIndicator.put("pivot_type", "second_resistance");
+                    else if(indicatorInfo.get(1).equals("true"))
+                        newIndicator.put("pivot_type", "first_resistance");
+                    else if(indicatorInfo.get(2).equals("true"))
+                        newIndicator.put("pivot_type", "pivot_point");
+                    else if(indicatorInfo.get(3).equals("true"))
+                        newIndicator.put("pivot_type", "first_support");
+                    else if(indicatorInfo.get(4).equals("true"))
+                        newIndicator.put("pivot_type", "second_support");
+
+                    newIndicator.put("tick_diff_from", indicatorInfo.get(5));
+                    newIndicator.put("tick_diff_to", indicatorInfo.get(6));
+
+                    newIndicator.put("target_clear_tick_from", indicatorInfo.get(7));
+                    newIndicator.put("target_clear_tick_to", indicatorInfo.get(8));
                     break;
                 case "파라볼릭":
                     newIndicator.put("name", IndicatorItemList.get(i).getName());

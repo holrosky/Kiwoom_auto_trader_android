@@ -126,6 +126,34 @@ public class IndicatorCustomAdapter extends ArrayAdapter {
                     }
 
                     break;
+                case "Pivot-직전봉":
+                    convertView = inflater.inflate(R.layout.indicator_u, parent, false);
+
+                    llTargetClearTick = (LinearLayout) convertView.findViewById(R.id.llTargetClearTick);
+                    etTargetClearTickFrom = (EditText) convertView.findViewById(R.id.etTargetClearTickFrom);
+                    etTargetClearTickTo = (EditText) convertView.findViewById(R.id.etTargetClearTickTo);
+
+                    if (type.contains("enter")) {
+                        etTargetClearTickFrom.setText("9999");
+                        etTargetClearTickTo.setText("9999");
+                        llTargetClearTick.setVisibility(View.GONE);
+                    }
+
+                    break;
+                case "Pivot-현재가":
+                    convertView = inflater.inflate(R.layout.indicator_v, parent, false);
+
+                    llTargetClearTick = (LinearLayout) convertView.findViewById(R.id.llTargetClearTick);
+                    etTargetClearTickFrom = (EditText) convertView.findViewById(R.id.etTargetClearTickFrom);
+                    etTargetClearTickTo = (EditText) convertView.findViewById(R.id.etTargetClearTickTo);
+
+                    if (type.contains("enter")) {
+                        etTargetClearTickFrom.setText("9999");
+                        etTargetClearTickTo.setText("9999");
+                        llTargetClearTick.setVisibility(View.GONE);
+                    }
+
+                    break;
                 case "파라볼릭":
                     convertView = inflater.inflate(R.layout.indicator_e, parent, false);
 
@@ -592,6 +620,80 @@ public class IndicatorCustomAdapter extends ArrayAdapter {
 
                     et = (EditText) convertView.findViewById(R.id.etIndicatorPeriod);
                     et.setText(indicators.get("indicator_period").toString());
+
+                    et = (EditText) convertView.findViewById(R.id.etTickDiffFrom);
+                    et.setText(indicators.get("tick_diff_from").toString());
+
+                    et = (EditText) convertView.findViewById(R.id.etTickDiffTo);
+                    et.setText(indicators.get("tick_diff_to").toString());
+
+                    et = (EditText) convertView.findViewById(R.id.etTargetClearTickFrom);
+                    et.setText(indicators.get("target_clear_tick_from").toString());
+
+                    et = (EditText) convertView.findViewById(R.id.etTargetClearTickTo);
+                    et.setText(indicators.get("target_clear_tick_to").toString());
+
+                    break;
+                case "Pivot-직전봉":
+                    rg = (RadioGroup) convertView.findViewById(R.id.rgIndicatorTimeType);
+                    if (indicators.get("indicator_time_type").toString().equals("tick"))
+                        rg.check(rg.getChildAt(0).getId());
+                    else if (indicators.get("indicator_time_type").toString().equals("min"))
+                        rg.check(rg.getChildAt(1).getId());
+                    else if (indicators.get("indicator_time_type").toString().equals("day"))
+                        rg.check(rg.getChildAt(2).getId());
+
+                    et = (EditText) convertView.findViewById(R.id.etIndicatorUnit);
+                    et.setText(indicators.get("indicator_unit").toString());
+
+                    rg = (RadioGroup) convertView.findViewById(R.id.rgSelectohcl);
+                    if (indicators.get("ohcl_type").toString().equals("open"))
+                        rg.check(rg.getChildAt(0).getId());
+                    else if (indicators.get("ohcl_type").toString().equals("high"))
+                        rg.check(rg.getChildAt(1).getId());
+                    else if (indicators.get("ohcl_type").toString().equals("low"))
+                        rg.check(rg.getChildAt(2).getId());
+                    else if (indicators.get("ohcl_type").toString().equals("close"))
+                        rg.check(rg.getChildAt(3).getId());
+
+                    rg = (RadioGroup) convertView.findViewById(R.id.rgSelectPivot);
+                    if (indicators.get("pivot_type").toString().equals("second_resistance"))
+                        rg.check(rg.getChildAt(0).getId());
+                    else if (indicators.get("pivot_type").toString().equals("first_resistance"))
+                        rg.check(rg.getChildAt(1).getId());
+                    else if (indicators.get("pivot_type").toString().equals("pivot_point"))
+                        rg.check(rg.getChildAt(2).getId());
+                    else if (indicators.get("pivot_type").toString().equals("first_support"))
+                        rg.check(rg.getChildAt(3).getId());
+                    else if (indicators.get("pivot_type").toString().equals("second_support"))
+                        rg.check(rg.getChildAt(4).getId());
+
+                    et = (EditText) convertView.findViewById(R.id.etTickDiffFrom);
+                    et.setText(indicators.get("tick_diff_from").toString());
+
+                    et = (EditText) convertView.findViewById(R.id.etTickDiffTo);
+                    et.setText(indicators.get("tick_diff_to").toString());
+
+                    et = (EditText) convertView.findViewById(R.id.etTargetClearTickFrom);
+                    et.setText(indicators.get("target_clear_tick_from").toString());
+
+                    et = (EditText) convertView.findViewById(R.id.etTargetClearTickTo);
+                    et.setText(indicators.get("target_clear_tick_to").toString());
+
+                    break;
+
+                case "Pivot-현재가":
+                    rg = (RadioGroup) convertView.findViewById(R.id.rgSelectPivot);
+                    if (indicators.get("pivot_type").toString().equals("second_resistance"))
+                        rg.check(rg.getChildAt(0).getId());
+                    else if (indicators.get("pivot_type").toString().equals("first_resistance"))
+                        rg.check(rg.getChildAt(1).getId());
+                    else if (indicators.get("pivot_type").toString().equals("pivot_point"))
+                        rg.check(rg.getChildAt(2).getId());
+                    else if (indicators.get("pivot_type").toString().equals("first_support"))
+                        rg.check(rg.getChildAt(3).getId());
+                    else if (indicators.get("pivot_type").toString().equals("second_support"))
+                        rg.check(rg.getChildAt(4).getId());
 
                     et = (EditText) convertView.findViewById(R.id.etTickDiffFrom);
                     et.setText(indicators.get("tick_diff_from").toString());
