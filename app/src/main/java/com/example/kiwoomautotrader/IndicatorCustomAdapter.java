@@ -176,6 +176,21 @@ public class IndicatorCustomAdapter extends ArrayAdapter {
                     }
 
                     break;
+                case "파라볼릭 고/저-가격":
+                    convertView = inflater.inflate(R.layout.indicator_w, parent, false);
+
+
+                    llTargetClearTick = (LinearLayout) convertView.findViewById(R.id.llTargetClearTick);
+                    etTargetClearTickFrom = (EditText) convertView.findViewById(R.id.etTargetClearTickFrom);
+                    etTargetClearTickTo = (EditText) convertView.findViewById(R.id.etTargetClearTickTo);
+
+                    if (type.contains("enter")) {
+                        etTargetClearTickFrom.setText("9999");
+                        etTargetClearTickTo.setText("9999");
+                        llTargetClearTick.setVisibility(View.GONE);
+                    }
+
+                    break;
                 case "RSI":
                     convertView = inflater.inflate(R.layout.indicator_f, parent, false);
 
@@ -745,6 +760,61 @@ public class IndicatorCustomAdapter extends ArrayAdapter {
                         rg.check(rg.getChildAt(2).getId());
                     else if (indicators.get("prabolic_type").toString().equals("dead_cross"))
                         rg.check(rg.getChildAt(3).getId());
+
+                    et = (EditText) convertView.findViewById(R.id.etTargetClearTickFrom);
+                    et.setText(indicators.get("target_clear_tick_from").toString());
+
+                    et = (EditText) convertView.findViewById(R.id.etTargetClearTickTo);
+                    et.setText(indicators.get("target_clear_tick_to").toString());
+
+                    break;
+                case "파라볼릭 고/저-가격":
+                    rg = (RadioGroup) convertView.findViewById(R.id.rgUpdateType);
+                    if (indicators.get("update_type").toString().equals("real"))
+                        rg.check(rg.getChildAt(1).getId());
+                    else
+                        rg.check(rg.getChildAt(2).getId());
+
+                    rg = (RadioGroup) convertView.findViewById(R.id.rgPriceType);
+                    if (indicators.get("price_type").toString().equals("real"))
+                        rg.check(rg.getChildAt(1).getId());
+                    else
+                        rg.check(rg.getChildAt(2).getId());
+
+                    rg = (RadioGroup) convertView.findViewById(R.id.rgIndicatorTimeType);
+                    if (indicators.get("indicator_time_type").toString().equals("tick"))
+                        rg.check(rg.getChildAt(0).getId());
+                    else if (indicators.get("indicator_time_type").toString().equals("min"))
+                        rg.check(rg.getChildAt(1).getId());
+                    else if (indicators.get("indicator_time_type").toString().equals("day"))
+                        rg.check(rg.getChildAt(2).getId());
+
+                    et = (EditText) convertView.findViewById(R.id.etIndicatorUnit);
+                    et.setText(indicators.get("indicator_unit").toString());
+
+                    et = (EditText) convertView.findViewById(R.id.etParabolicValueOne);
+                    et.setText(indicators.get("prabolic_value_one").toString());
+
+                    et = (EditText) convertView.findViewById(R.id.etParabolicValueTwo);
+                    et.setText(indicators.get("prabolic_value_two").toString());
+
+                    rg = (RadioGroup) convertView.findViewById(R.id.rgHighLowType);
+                    if (indicators.get("high_low_type").toString().equals("0"))
+                        rg.check(rg.getChildAt(0).getId());
+                    else if (indicators.get("high_low_type").toString().equals("1"))
+                        rg.check(rg.getChildAt(1).getId());
+                    else if (indicators.get("high_low_type").toString().equals("2"))
+                        rg.check(rg.getChildAt(2).getId());
+                    else if (indicators.get("high_low_type").toString().equals("3"))
+                        rg.check(rg.getChildAt(3).getId());
+                    else if (indicators.get("high_low_type").toString().equals("4"))
+                        rg.check(rg.getChildAt(4).getId());
+
+                    et = (EditText) convertView.findViewById(R.id.etTickDiffFrom);
+                    et.setText(indicators.get("tick_diff_from").toString());
+
+                    et = (EditText) convertView.findViewById(R.id.etTickDiffTo);
+                    et.setText(indicators.get("tick_diff_to").toString());
 
                     et = (EditText) convertView.findViewById(R.id.etTargetClearTickFrom);
                     et.setText(indicators.get("target_clear_tick_from").toString());

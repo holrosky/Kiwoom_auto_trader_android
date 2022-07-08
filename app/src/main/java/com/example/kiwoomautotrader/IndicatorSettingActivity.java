@@ -95,10 +95,10 @@ public class IndicatorSettingActivity extends AppCompatActivity {
             IndicatorNameList = new ArrayList<>(Arrays.asList("스탑트레일링", "이익보존", "틱 청산"));
 
         else if (type.equals("clear_buy") || type.equals("clear_sell"))
-            IndicatorNameList = new ArrayList<>(Arrays.asList("스탑트레일링", "이익보존", "틱 청산", "기준선-배열/거리", "기준선-크로스", "기준선-직전봉", "기준선-현재가", "Pivot-직전봉", "Pivot-현재가", "파라볼릭", "RSI"
+            IndicatorNameList = new ArrayList<>(Arrays.asList("스탑트레일링", "이익보존", "틱 청산", "기준선-배열/거리", "기준선-크로스", "기준선-직전봉", "기준선-현재가", "Pivot-직전봉", "Pivot-현재가", "파라볼릭", "파라볼릭 고/저-가격","RSI"
                     , "직전봉-현재가", "직전봉의 상태값", "현재봉의 상태값", "최근 n개봉", "가격지표", "MACD 크로스", "MACD / Osc 현재값", "MACD Osc 비교", "MACD Osc 연속 증감"));
         else
-            IndicatorNameList = new ArrayList<>(Arrays.asList("기준선-배열/거리", "기준선-크로스", "기준선-직전봉", "기준선-현재가", "Pivot-직전봉", "Pivot-현재가", "파라볼릭", "RSI"
+            IndicatorNameList = new ArrayList<>(Arrays.asList("기준선-배열/거리", "기준선-크로스", "기준선-직전봉", "기준선-현재가", "Pivot-직전봉", "Pivot-현재가", "파라볼릭", "파라볼릭 고/저-가격", "RSI"
                     , "직전봉-현재가", "직전봉의 상태값", "현재봉의 상태값", "최근 n개봉", "가격지표",  "MACD 크로스", "MACD / Osc 현재값", "MACD Osc 비교", "MACD Osc 연속 증감", "가상매매지표 (먼저만족)", "가상매매지표 (박스권체크)"));
 
         IndicatorItemList = new ArrayList<>();
@@ -461,6 +461,9 @@ public class IndicatorSettingActivity extends AppCompatActivity {
 
                     newIndicator.put("tick_diff_from", indicatorInfo.get(7));
                     newIndicator.put("tick_diff_to", indicatorInfo.get(8));
+
+                    newIndicator.put("target_clear_tick_from", indicatorInfo.get(9));
+                    newIndicator.put("target_clear_tick_to", indicatorInfo.get(10));
                     break;
                 case "Pivot-직전봉":
                     newIndicator.put("name", IndicatorItemList.get(i).getName());
@@ -560,6 +563,51 @@ public class IndicatorSettingActivity extends AppCompatActivity {
                     newIndicator.put("target_clear_tick_from", indicatorInfo.get(13));
                     newIndicator.put("target_clear_tick_to", indicatorInfo.get(14));
                     break;
+                case "파라볼릭 고/저-가격":
+                    newIndicator.put("name", IndicatorItemList.get(i).getName());
+                    if(indicatorInfo.get(0).equals("true"))
+                        newIndicator.put("update_type", "real");
+                    else
+                        newIndicator.put("update_type", "prev");
+
+                    if(indicatorInfo.get(2).equals("true"))
+                        newIndicator.put("price_type", "real");
+                    else
+                        newIndicator.put("price_type", "prev");
+
+                    if(indicatorInfo.get(4).equals("true"))
+                        newIndicator.put("indicator_time_type", "tick");
+                    else if(indicatorInfo.get(5).equals("true"))
+                        newIndicator.put("indicator_time_type", "min");
+                    else
+                        newIndicator.put("indicator_time_type", "day");
+
+                    if (indicatorInfo.get(6).equals("true"))
+                        newIndicator.put("indicator_unit", "1");
+                    else
+                        newIndicator.put("indicator_unit", indicatorInfo.get(7));
+
+                    newIndicator.put("prabolic_value_one", indicatorInfo.get(8));
+                    newIndicator.put("prabolic_value_two", indicatorInfo.get(9));
+
+                    if(indicatorInfo.get(10).equals("true"))
+                        newIndicator.put("high_low_type", "0");
+                    else if(indicatorInfo.get(11).equals("true"))
+                        newIndicator.put("high_low_type", "1");
+                    else if(indicatorInfo.get(12).equals("true"))
+                        newIndicator.put("high_low_type", "2");
+                    else if(indicatorInfo.get(13).equals("true"))
+                        newIndicator.put("high_low_type", "3");
+                    else if(indicatorInfo.get(14).equals("true"))
+                        newIndicator.put("high_low_type", "4");
+
+                    newIndicator.put("tick_diff_from", indicatorInfo.get(15));
+                    newIndicator.put("tick_diff_to", indicatorInfo.get(16));
+
+                    newIndicator.put("target_clear_tick_from", indicatorInfo.get(17));
+                    newIndicator.put("target_clear_tick_to", indicatorInfo.get(18));
+                    break;
+
                 case "RSI":
                     newIndicator.put("name", IndicatorItemList.get(i).getName());
 
