@@ -42,6 +42,7 @@
                 android:id="@+id/tvStrategyName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
                 android:text="메세지 서버:"
                 app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
                 app:layout_constraintTop_toTopOf="@+id/guidelineTop" />
@@ -58,19 +59,18 @@
                 android:id="@+id/tvAutoTrader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="64dp"
                 android:text="자동매매 프로그램:"
-                app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
-                app:layout_constraintTop_toBottomOf="@+id/tvStrategyName" />
+                app:layout_constraintStart_toStartOf="@+id/etStrategyName"
+                app:layout_constraintTop_toBottomOf="@+id/guidelineTop" />
 
             <TextView
                 android:id="@+id/tvAutoTraderStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 app:layout_constraintStart_toEndOf="@+id/tvAutoTrader"
-                app:layout_constraintTop_toBottomOf="@+id/etStrategyName" />
+                app:layout_constraintTop_toBottomOf="@+id/guidelineTop" />
 
             <Button
                 android:id="@+id/btnAccChange"
@@ -407,6 +407,26 @@
                 app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
                 app:layout_constraintTop_toBottomOf="@+id/etAllClearTargetProfitTick" />
 
+            <TextView
+                android:id="@+id/tvStrategy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="전략 리스트"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lineThird" />
+
+            <TextView
+                android:id="@+id/tvQueueLen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="체결:"
+                app:layout_constraintStart_toStartOf="@id/guidelineLeft"
+                app:layout_constraintTop_toBottomOf="@+id/tvStrategy" />
+
             <EditText
                 android:id="@+id/etQueueLen"
                 android:layout_width="70dp"
@@ -415,9 +435,17 @@
                 android:background="@drawable/edittext_rounded_corner_rectangle"
                 android:enabled="false"
                 android:padding="5dp"
-                app:layout_constraintEnd_toStartOf="@+id/etIndicatorLen"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="@id/guidelineLeft"
+                app:layout_constraintStart_toEndOf="@id/tvQueueLen"
+                app:layout_constraintTop_toBottomOf="@+id/tvStrategy" />
+
+            <TextView
+                android:id="@+id/tvIndicatorLen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="계산지표:"
+                app:layout_constraintStart_toEndOf="@id/etQueueLen"
                 app:layout_constraintTop_toBottomOf="@+id/tvStrategy" />
 
             <EditText
@@ -429,38 +457,73 @@
                 android:background="@drawable/edittext_rounded_corner_rectangle"
                 android:enabled="false"
                 android:padding="5dp"
-                app:layout_constraintStart_toEndOf="@+id/etQueueLen"
+                app:layout_constraintStart_toEndOf="@+id/tvIndicatorLen"
                 app:layout_constraintTop_toBottomOf="@+id/tvStrategy" />
 
             <TextView
-                android:id="@+id/tvStrategy"
+                android:id="@+id/tvOrderLen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="45dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="전략 리스트"
-                app:layout_constraintStart_toEndOf="@+id/etIndicatorLen"
-                app:layout_constraintTop_toBottomOf="@+id/lineThird" />
+                android:text="대기주문:"
+                app:layout_constraintStart_toEndOf="@id/etIndicatorLen"
+                app:layout_constraintTop_toBottomOf="@+id/tvStrategy" />
+
+            <EditText
+                android:id="@+id/etOrderLen"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edittext_rounded_corner_rectangle"
+                android:enabled="false"
+                android:padding="5dp"
+                app:layout_constraintStart_toEndOf="@+id/tvOrderLen"
+                app:layout_constraintTop_toBottomOf="@+id/tvStrategy" />
+
+            <TextView
+                android:id="@+id/tvWaitingReplyLen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:text="응답대기:"
+                app:layout_constraintStart_toStartOf="@id/guidelineLeft"
+                app:layout_constraintTop_toBottomOf="@+id/etQueueLen" />
+
+            <EditText
+                android:id="@+id/etWaitingReplyLen"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/edittext_rounded_corner_rectangle"
+                android:enabled="false"
+                android:padding="5dp"
+                app:layout_constraintStart_toEndOf="@id/tvWaitingReplyLen"
+                app:layout_constraintTop_toBottomOf="@+id/etQueueLen" />
 
             <Button
                 android:id="@+id/btnAllClear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="20dp"
                 android:text="일괄청산"
                 android:textSize="15sp"
                 app:layout_constraintEnd_toStartOf="@id/btnAddStrategy"
-                app:layout_constraintTop_toBottomOf="@+id/tvStrategy" />
+                app:layout_constraintTop_toBottomOf="@+id/etQueueLen" />
 
             <Button
                 android:id="@+id/btnAddStrategy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="20dp"
                 android:text="추가"
                 android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="@id/guidelineRight"
-                app:layout_constraintTop_toBottomOf="@+id/tvStrategy" />
+                app:layout_constraintTop_toBottomOf="@+id/etQueueLen" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout

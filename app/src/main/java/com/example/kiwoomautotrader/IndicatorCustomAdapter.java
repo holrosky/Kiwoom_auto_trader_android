@@ -313,7 +313,8 @@ public class IndicatorCustomAdapter extends ArrayAdapter {
                 case "가격지표":
                     convertView = inflater.inflate(R.layout.indicator_i, parent, false);
 
-                    llTargetClearTick = (LinearLayout) convertView.findViewById(R.id.llTargetClearTick);
+                    LinearLayout llFirstTargetClearTick = (LinearLayout) convertView.findViewById(R.id.llFirstTargetClearTick);
+                    LinearLayout llSecondTargetClearTick = (LinearLayout) convertView.findViewById(R.id.llSecondTargetClearTick);
                     EditText etFirstTargetClearTickFrom = (EditText) convertView.findViewById(R.id.etFirstTargetClearTickFrom);
                     EditText etFirstTargetClearTickTo = (EditText) convertView.findViewById(R.id.etFirstTargetClearTickTo);
 
@@ -327,7 +328,8 @@ public class IndicatorCustomAdapter extends ArrayAdapter {
                         etSecondTargetClearTickFrom.setText("9999");
                         etSecondTargetClearTickTo.setText("9999");
 
-                        llTargetClearTick.setVisibility(View.GONE);
+                        llFirstTargetClearTick.setVisibility(View.GONE);
+                        llSecondTargetClearTick.setVisibility(View.GONE);
                     }
 
                     break;
@@ -769,12 +771,6 @@ public class IndicatorCustomAdapter extends ArrayAdapter {
 
                     break;
                 case "파라볼릭 고/저-가격":
-                    rg = (RadioGroup) convertView.findViewById(R.id.rgUpdateType);
-                    if (indicators.get("update_type").toString().equals("real"))
-                        rg.check(rg.getChildAt(1).getId());
-                    else
-                        rg.check(rg.getChildAt(2).getId());
-
                     rg = (RadioGroup) convertView.findViewById(R.id.rgPriceType);
                     if (indicators.get("price_type").toString().equals("real"))
                         rg.check(rg.getChildAt(1).getId());

@@ -41,33 +41,6 @@
         </LinearLayout>
 
         <RadioGroup
-            android:id="@+id/rgUpdateType"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checkedButton="@id/default2"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="고/저 갱신 : "
-                android:textSize="20sp" />
-
-
-            <RadioButton
-                android:id="@+id/default2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="실시간"/>
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="마감"/>
-        </RadioGroup>
-
-        <RadioGroup
             android:id="@+id/rgPriceType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -232,12 +205,12 @@
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="L1"/>
+                        android:text="L2"/>
 
                     <RadioButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="L2"/>
+                        android:text="L1"/>
                 </RadioGroup>
 
                 <LinearLayout

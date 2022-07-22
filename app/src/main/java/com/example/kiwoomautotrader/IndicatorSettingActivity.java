@@ -565,47 +565,43 @@ public class IndicatorSettingActivity extends AppCompatActivity {
                     break;
                 case "파라볼릭 고/저-가격":
                     newIndicator.put("name", IndicatorItemList.get(i).getName());
-                    if(indicatorInfo.get(0).equals("true"))
-                        newIndicator.put("update_type", "real");
-                    else
-                        newIndicator.put("update_type", "prev");
 
-                    if(indicatorInfo.get(2).equals("true"))
+                    if(indicatorInfo.get(0).equals("true"))
                         newIndicator.put("price_type", "real");
                     else
                         newIndicator.put("price_type", "prev");
 
-                    if(indicatorInfo.get(4).equals("true"))
+                    if(indicatorInfo.get(2).equals("true"))
                         newIndicator.put("indicator_time_type", "tick");
-                    else if(indicatorInfo.get(5).equals("true"))
+                    else if(indicatorInfo.get(3).equals("true"))
                         newIndicator.put("indicator_time_type", "min");
                     else
                         newIndicator.put("indicator_time_type", "day");
 
-                    if (indicatorInfo.get(6).equals("true"))
+                    if (indicatorInfo.get(4).equals("true"))
                         newIndicator.put("indicator_unit", "1");
                     else
-                        newIndicator.put("indicator_unit", indicatorInfo.get(7));
+                        newIndicator.put("indicator_unit", indicatorInfo.get(5));
 
-                    newIndicator.put("prabolic_value_one", indicatorInfo.get(8));
-                    newIndicator.put("prabolic_value_two", indicatorInfo.get(9));
+                    newIndicator.put("prabolic_value_one", indicatorInfo.get(6));
+                    newIndicator.put("prabolic_value_two", indicatorInfo.get(7));
 
-                    if(indicatorInfo.get(10).equals("true"))
+                    if(indicatorInfo.get(8).equals("true"))
                         newIndicator.put("high_low_type", "0");
-                    else if(indicatorInfo.get(11).equals("true"))
+                    else if(indicatorInfo.get(9).equals("true"))
                         newIndicator.put("high_low_type", "1");
-                    else if(indicatorInfo.get(12).equals("true"))
+                    else if(indicatorInfo.get(10).equals("true"))
                         newIndicator.put("high_low_type", "2");
-                    else if(indicatorInfo.get(13).equals("true"))
+                    else if(indicatorInfo.get(11).equals("true"))
                         newIndicator.put("high_low_type", "3");
-                    else if(indicatorInfo.get(14).equals("true"))
+                    else if(indicatorInfo.get(12).equals("true"))
                         newIndicator.put("high_low_type", "4");
 
-                    newIndicator.put("tick_diff_from", indicatorInfo.get(15));
-                    newIndicator.put("tick_diff_to", indicatorInfo.get(16));
+                    newIndicator.put("tick_diff_from", indicatorInfo.get(13));
+                    newIndicator.put("tick_diff_to", indicatorInfo.get(14));
 
-                    newIndicator.put("target_clear_tick_from", indicatorInfo.get(17));
-                    newIndicator.put("target_clear_tick_to", indicatorInfo.get(18));
+                    newIndicator.put("target_clear_tick_from", indicatorInfo.get(15));
+                    newIndicator.put("target_clear_tick_to", indicatorInfo.get(16));
                     break;
 
                 case "RSI":

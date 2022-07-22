@@ -70,7 +70,8 @@ public class MainActivity extends AppCompatActivity implements LifecycleObserver
 
     private static EditText etQueueLen;
     private static EditText etIndicatorLen;
-
+    private static EditText etOrderLen;
+    private static EditText etWaitingReplyLen;
 
     private static TextView tvStrategy;
     private static Button btnAllClear;
@@ -199,6 +200,8 @@ public class MainActivity extends AppCompatActivity implements LifecycleObserver
 
         etQueueLen = (EditText) findViewById(R.id.etQueueLen);
         etIndicatorLen = (EditText) findViewById(R.id.etIndicatorLen);
+        etOrderLen = (EditText) findViewById(R.id.etOrderLen);
+        etWaitingReplyLen = (EditText) findViewById(R.id.etWaitingReplyLen);
 
         tvStrategy = (TextView) findViewById(R.id.tvStrategy);
         btnAllClear = (Button) findViewById(R.id.btnAllClear);
@@ -668,6 +671,8 @@ public class MainActivity extends AppCompatActivity implements LifecycleObserver
         try {
             etQueueLen.setText(jsonObject.getString("queue_length"));
             etIndicatorLen.setText(jsonObject.getString("calc_indicators_length"));
+            etOrderLen.setText(jsonObject.getString("order_length"));
+            etWaitingReplyLen.setText(jsonObject.getString("waiting_length"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
